@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultra 116 Tracker — 3 Juli 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&family=Barlow+Semi+Condensed:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#080c10; --surface:#0e1318; --surface2:#141a22;
+    --border:rgba(255,255,255,0.07); --text:#e8edf2;
+    --muted:rgba(232,237,242,0.4); --dim:rgba(232,237,242,0.18);
+    --green:#39d98a; --yellow:#f5c842; --orange:#ff7040; --purple:#9d7fff; --blue:#5bb4ff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+  /* SYNC BAR */
+  #sync-bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:1000;}
+  #sync-bar.syncing{background:linear-gradient(90deg,var(--yellow),var(--green),var(--yellow));background-size:200%;animation:shimmer 1s infinite linear;}
+  #sync-bar.ok{background:var(--green);animation:fadeBar 2s forwards;}
+  #sync-bar.err{background:var(--orange);}
+  @keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+  @keyframes fadeBar{0%{opacity:1}70%{opacity:1}100%{opacity:0}}
+
+  /* SYNC CHIP */
+  #sync-chip{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:4px 10px;border-radius:20px;cursor:pointer;transition:border-color 0.2s;user-select:none;}
+  #sync-chip:hover{border-color:rgba(255,255,255,0.15);}
+  .sdot{width:7px;height:7px;border-radius:50%;background:var(--dim);flex-shrink:0;transition:background 0.3s;}
+  .sdot.syncing{background:var(--yellow);animation:pulse 0.8s infinite;}
+  .sdot.ok{background:var(--green);}
+  .sdot.err{background:var(--orange);}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+  /* SETUP BANNER */
+  #setup-banner{background:rgba(245,200,66,0.07);border:1px solid rgba(245,200,66,0.22);border-radius:14px;padding:18px;margin-bottom:18px;display:none;}
+  #setup-banner.show{display:block;}
+  .sb-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--yellow);margin-bottom:10px;}
+  .sb-steps{font-size:13px;color:var(--muted);line-height:2;}
+  .sb-steps code{font-family:monospace;font-size:12px;background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;color:var(--text);}
+  .sb-steps a{color:var(--yellow);}
+  .sb-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .sb-input{flex:1;min-width:200px;background:var(--surface2);border:1px solid rgba(245,200,66,0.3);color:var(--text);font-size:12px;font-family:monospace;padding:8px 12px;border-radius:8px;outline:none;}
+  .sb-input:focus{border-color:var(--yellow);}
+  .sb-input::placeholder{color:var(--dim);}
+  .sb-btn{background:var(--yellow);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;padding:8px 18px;border-radius:8px;border:none;cursor:pointer;white-space:nowrap;}
+  .sb-btn:hover{opacity:.85;}
+  .sb-err{font-size:12px;color:var(--orange);margin-top:6px;display:none;}
+  .sb-err.show{display:block;}
+
+  /* COUNTDOWN HERO */
+  .cd-hero{background:linear-gradient(135deg,#0a1020 0%,#0c1628 100%);border:1px solid rgba(57,217,138,0.14);border-radius:20px;padding:26px 22px;margin-bottom:16px;position:relative;overflow:hidden;}
+  .cd-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(57,217,138,0.07) 0%,transparent 70%);pointer-events:none;}
+  .cd-hero-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+  .cd-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .cd-block{flex:1;min-width:60px;max-width:90px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px 8px;text-align:center;}
+  .cd-num{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1;transition:color .5s;}
+  .cd-lbl{font-size:10px;color:var(--dim);margin-top:4px;letter-spacing:.12em;text-transform:uppercase;}
+  .cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:rgba(255,255,255,0.1);padding-bottom:16px;flex-shrink:0;}
+  .cd-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px;}
+  .cd-meta{font-size:13px;color:var(--muted);}
+  .cd-meta strong{color:var(--text);}
+  .cd-prog-wrap{display:flex;align-items:center;gap:8px;}
+  .cd-prog-bar{width:100px;height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
+  .cd-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--yellow));border-radius:4px;transition:width .6s ease;}
+
+  /* HEADER */
+  .header{padding:40px 20px 18px;border-bottom:1px solid var(--border);}
+  .header-inner{max-width:720px;margin:0 auto;}
+  .label-tiny{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .header h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(34px,8vw,56px);font-weight:900;line-height:1;color:#fff;}
+  .header h1 span{color:var(--green);}
+  .header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center;}
+  .meta-chip{font-size:12px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:4px 10px;border-radius:20px;}
+
+  .overall-prog{max-width:720px;margin:0 auto;padding:14px 20px 0;}
+  .prog-row{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px;}
+  .prog-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;}
+  .prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--yellow));transition:width .6s ease;}
+
+  .tabs{max-width:720px;margin:0 auto;padding:14px 20px 0;display:flex;gap:4px;}
+  .tab-btn{background:transparent;border:1px solid transparent;color:var(--muted);font-family:'Barlow Semi Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all .18s;text-transform:uppercase;}
+  .tab-btn:hover{color:var(--text);background:var(--surface2);}
+  .tab-btn.active{background:var(--surface2);border-color:var(--border);color:#fff;}
+
+  .main{max-width:720px;margin:0 auto;padding:20px 20px 80px;}
+  .tab-content{display:none;}
+  .tab-content.active{display:block;animation:fadeIn .22s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  /* OVERVIEW */
+  .phase-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+  @media(min-width:520px){.phase-grid{grid-template-columns:repeat(4,1fr);}}
+  .phase-card{border-radius:12px;padding:12px;border:1px solid var(--border);background:var(--surface);}
+  .phase-dot{width:8px;height:8px;border-radius:50%;margin-bottom:8px;}
+  .phase-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:#fff;}
+  .phase-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4;}
+  .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px;}
+  .wk-cell{aspect-ratio:1;border-radius:8px;border:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-family:'Barlow Condensed',sans-serif;}
+  .wk-cell:hover{transform:scale(1.06);}
+  .wk-cell .wk-num{font-size:14px;font-weight:900;}
+  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;}
+  .stat-val{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;}
+  .stat-label{font-size:11px;color:var(--muted);margin-top:4px;}
+  .section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;}
+
+  /* TRAINING */
+  .week-nav{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+  .nav-btn{width:36px;height:36px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+  .nav-btn:hover{background:var(--surface);color:#fff;}
+  .week-title-area{flex:1;text-align:center;}
+  .wt-main{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;color:#fff;}
+  .wt-sub{font-size:12px;color:var(--muted);}
+  .week-pills{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin-bottom:18px;}
+  .week-pills::-webkit-scrollbar{display:none;}
+  .week-pill{flex-shrink:0;width:34px;height:34px;border-radius:8px;border:1px solid transparent;background:var(--surface2);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+  .week-pill:hover{color:#fff;}
+
+  .week-header-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;}
+  .whc-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;}
+  .whc-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;}
+  .badge{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:20px;}
+  .whc-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;}
+  .whc-date{font-size:12px;color:var(--muted);margin-top:2px;}
+  .whc-targets{display:flex;gap:16px;}
+  .tgt{text-align:right;}
+  .tgt-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
+  .tgt-label{font-size:11px;color:var(--dim);}
+  .whc-notes{font-size:13px;color:var(--muted);line-height:1.6;font-style:italic;border-left:2px solid rgba(255,255,255,0.1);padding-left:12px;margin-top:12px;}
+
+  .days-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px;}
+  @media(min-width:540px){.days-grid{grid-template-columns:repeat(2,1fr);}}
+  .day-card{border-radius:14px;padding:16px;border:1px solid rgba(255,255,255,0.06);}
+  .dc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+  .dc-day{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+  .dc-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;color:#fff;margin-top:2px;}
+  .dc-dur{font-size:11px;color:var(--muted);margin-top:2px;}
+  .dc-pct-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;text-align:right;}
+  .dc-pct-sub{font-size:10px;color:var(--dim);text-align:right;}
+  .dc-mini-bar{height:2px;border-radius:2px;background:rgba(255,255,255,0.08);margin-bottom:12px;overflow:hidden;}
+  .dc-mini-fill{height:100%;border-radius:2px;transition:width .4s ease;}
+
+  .check-item{display:flex;align-items:flex-start;gap:10px;padding:6px 4px;border-radius:8px;cursor:pointer;transition:background .15s;border:none;background:transparent;width:100%;text-align:left;}
+  .check-item:hover{background:rgba(255,255,255,0.04);}
+  .check-box{flex-shrink:0;width:18px;height:18px;border-radius:5px;border:1.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .2s;}
+  .check-box svg{display:none;}
+  .check-item.checked .check-box{border-color:transparent;}
+  .check-item.checked .check-box svg{display:block;}
+  .check-text{font-size:13px;line-height:1.5;color:rgba(232,237,242,0.8);transition:all .2s;}
+  .check-item.checked .check-text{color:var(--dim);text-decoration:line-through;}
+
+  .gear-section{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
+  .gear-sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .gear-sec-title{font-family:'Barlow Semi Condensed',sans-serif;font-weight:700;font-size:14px;color:#fff;}
+  .gear-mini-bar{height:2px;border-radius:2px;background:rgba(255,255,255,0.07);margin-bottom:12px;overflow:hidden;}
+  .gear-mini-fill{height:100%;border-radius:2px;background:var(--yellow);transition:width .4s;}
+  .week-gear{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;}
+  .wg-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+
+  ::-webkit-scrollbar{width:4px;height:4px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<div id="sync-bar"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="label-tiny">Ultra Trail Training Plan</div>
+    <h1>116KM · <span>7400M</span> EG</h1>
+    <div class="header-meta">
+      <span class="meta-chip">📅 30 Mar – 3 Jul 2025</span>
+      <span class="meta-chip">SMR 50K ✓ · 70K ✓ · 80K ✓</span>
+      <span class="meta-chip">14 Minggu</span>
+      <div id="sync-chip" onclick="manualSync()" title="Klik untuk sync / setup">
+        <span class="sdot" id="sdot"></span>
+        <span id="slabel">Tidak terhubung</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overall-prog">
+  <div class="prog-row">
+    <span>Progress keseluruhan</span>
+    <span id="overall-pct" style="color:var(--green);font-weight:700">0%</span>
+  </div>
+  <div class="prog-bar"><div class="prog-fill" id="overall-fill" style="width:0%"></div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('overview')">📊 Overview</button>
+  <button class="tab-btn" onclick="switchTab('training')">🏃 Training</button>
+  <button class="tab-btn" onclick="switchTab('gear')">🎒 Gear</button>
+</div>
+
+<div class="main">
+
+  <!-- OVERVIEW -->
+  <div id="tab-overview" class="tab-content active">
+
+    <!-- COUNTDOWN -->
+    <div class="cd-hero">
+      <div class="cd-hero-label">⏳ Menuju Race Day — 3 Juli 2025</div>
+      <div class="cd-row">
+        <div class="cd-block"><div class="cd-num" id="cd-d">—</div><div class="cd-lbl">Hari</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-h">—</div><div class="cd-lbl">Jam</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-m">—</div><div class="cd-lbl">Menit</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-s">—</div><div class="cd-lbl">Detik</div></div>
+      </div>
+      <div class="cd-footer">
+        <div class="cd-meta"><strong>Ultra Trail 116km · 7400m EG</strong><br><span style="font-size:11px">Start 30 Mar → Finish 3 Jul 2025</span></div>
+        <div class="cd-prog-wrap">
+          <div class="cd-prog-bar"><div class="cd-prog-fill" id="hero-fill" style="width:0%"></div></div>
+          <span style="font-size:12px;color:var(--green);font-weight:700" id="hero-pct">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAS SETUP -->
+    <div id="setup-banner" class="show">
+      <div class="sb-title">⚙️ Hubungkan ke Google Sheets</div>
+      <div class="sb-steps">
+        <b>1.</b> Buka <a href="https://script.google.com" target="_blank">script.google.com</a> → <b>New Project</b><br>
+        <b>2.</b> Hapus semua kode → paste isi file <code>Code.gs</code> yang sudah didownload<br>
+        <b>3.</b> Klik <code>Extensions → Apps Script</code> atau langsung di script editor<br>
+        <b>4.</b> <code>Deploy → New deployment → Web app</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Execute as: <code>Me</code> · Who has access: <code>Anyone</code> → <b>Deploy</b><br>
+        <b>5.</b> Copy URL web app → paste di sini:
+      </div>
+      <div class="sb-row">
+        <input class="sb-input" id="gas-input" type="url" placeholder="https://script.google.com/macros/s/AKfy.../exec">
+        <button class="sb-btn" onclick="saveGasUrl()">Connect →</button>
+      </div>
+      <div class="sb-err" id="gas-err">URL tidak valid. Pastikan URL dari Google Apps Script.</div>
+    </div>
+
+    <div class="section-title" style="margin-top:4px">Fase Training</div>
+    <div class="phase-grid" id="phase-grid"></div>
+    <div class="section-title">Peta 14 Minggu — klik untuk buka</div>
+    <div class="week-grid" id="wk-grid"></div>
+    <div class="section-title">Statistik Program</div>
+    <div class="stats-row" id="stats-row"></div>
+  </div>
+
+  <!-- TRAINING -->
+  <div id="tab-training" class="tab-content">
+    <div class="week-nav">
+      <button class="nav-btn" onclick="changeWeek(-1)">‹</button>
+      <div class="week-title-area">
+        <div class="wt-main" id="nav-title">Minggu 1</div>
+        <div class="wt-sub">dari 14 minggu</div>
+      </div>
+      <button class="nav-btn" onclick="changeWeek(1)">›</button>
+    </div>
+    <div class="week-pills" id="week-pills"></div>
+    <div id="week-content"></div>
+  </div>
+
+  <!-- GEAR -->
+  <div id="tab-gear" class="tab-content">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6">
+      Centang semua gear yang sudah kamu miliki dan siap race. Item yang belum = perlu segera disiapkan.
+    </p>
+    <div id="gear-master"></div>
+  </div>
+
+</div>
+
+<script>
+// ════════════════════════════════════
+// DATA
+// ════════════════════════════════════
+const RACE_DATE=new Date('2025-07-03T05:00:00');
+const PHASES=[
+  {id:1,name:'Base Rebuild',weeks:[1,2,3,4],color:'#39d98a',desc:'Bangun kembali fondasi setelah deload 3 bulan'},
+  {id:2,name:'Specific Build',weeks:[5,6,7,8,9],color:'#f5c842',desc:'Tingkatkan EG & volume, simulasi race'},
+  {id:3,name:'Peak & Sim',weeks:[10,11],color:'#ff7040',desc:'Peak load — simulasi kondisi race nyata'},
+  {id:4,name:'Taper',weeks:[12,13,14],color:'#9d7fff',desc:'Turunkan beban, pertahankan sharpness'},
+];
+const DT={easy:{c:'#39d98a',l:'Easy Run'},trail:{c:'#fb923c',l:'Trail / Hill'},strength:{c:'#5bb4ff',l:'Strength'},long:{c:'#ff4f4f',l:'Long Run'},rest:{c:'#6b7280',l:'Rest / Jalan'},race:{c:'#f5c842',l:'RACE DAY 🏁'}};
+
+const WEEKS=[
+  {w:1,p:1,dr:'30 Mar – 5 Apr',title:'Bangkit Lagi',km:30,eg:500,notes:'Minggu pertama setelah deload — jangan push! Fokus pada konsistensi dan rasa senang berlari lagi.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'40 menit',tasks:[{id:'w1a1',t:'Lari santai 8km, pace nyaman (bisa ngobrol)'},{id:'w1a2',t:'Tidak ada target pace — cukup gerak'},{id:'w1a3',t:'Pemanasan 5 menit jalan kaki sebelumnya'}]},
+    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w1b1',t:'Squat bodyweight 3×15'},{id:'w1b2',t:'Lunges 3×12 per kaki'},{id:'w1b3',t:'Glute bridge 3×20'},{id:'w1b4',t:'Plank 3×45 detik'},{id:'w1b5',t:'Calf raises 3×20'}]},
+    {day:'Hari C',type:'trail',dur:'60–75 menit',tasks:[{id:'w1c1',t:'Cari rute tanjakan minimal 200m EG'},{id:'w1c2',t:'Hiking uphill, lari downhill pelan'},{id:'w1c3',t:'Total jarak ~10–12km'},{id:'w1c4',t:'Bawa air + 1 gel/snack'}]},
+    {day:'Hari D',type:'rest',dur:'Opsional',tasks:[{id:'w1d1',t:'Jalan kaki 20–30 menit (active recovery)'},{id:'w1d2',t:'Stretching 10 menit malam hari'}]},
+   ],gear:[{id:'g1a',t:'Cek kondisi trail shoes'},{id:'g1b',t:'Siapkan running vest / hydration pack'},{id:'g1c',t:'Stok gel / snack latihan'}]},
+
+  {w:2,p:1,dr:'6 Apr – 12 Apr',title:'Fondasi',km:38,eg:800,notes:'Mulai perkenalkan cadence awareness. Cadence 170–175 spm = lebih efisien di jarak jauh.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'50 menit',tasks:[{id:'w2a1',t:'Lari 10km pace santai'},{id:'w2a2',t:'Fokus cadence — target 170–175 spm'},{id:'w2a3',t:'Pendinginan 5 menit'}]},
+    {day:'Hari B',type:'strength',dur:'50 menit',tasks:[{id:'w2b1',t:'Single-leg squat 3×10'},{id:'w2b2',t:'Step-up 3×15'},{id:'w2b3',t:'Nordic hamstring curl 3×8'},{id:'w2b4',t:'Dead bug 3×12'},{id:'w2b5',t:'Side plank 3×30 detik'},{id:'w2b6',t:'Hollow body hold 3×20 detik'}]},
+    {day:'Hari C',type:'trail',dur:'90 menit',tasks:[{id:'w2c1',t:'Trail run 15–16km dengan 500–600m EG'},{id:'w2c2',t:'Hiking saat tanjakan >15%'},{id:'w2c3',t:'Teknik descent — langkah pendek'},{id:'w2c4',t:'Makan & minum tiap 45 menit'}]},
+    {day:'Hari D',type:'easy',dur:'30 menit',tasks:[{id:'w2d1',t:'Lari 6km recovery pace'},{id:'w2d2',t:'Stretch + foam rolling'}]},
+   ],gear:[{id:'g2a',t:'Test trekking poles'},{id:'g2b',t:'Cek headlamp — baterai OK?'}]},
+
+  {w:3,p:1,dr:'13 Apr – 19 Apr',title:'B2B Pertama',km:48,eg:1200,notes:'B2B pertama! Day 2 selalu berat — latihan mental sekaligus fisik. Nilai sukses: kamu selesai.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'55 menit',tasks:[{id:'w3a1',t:'Lari 10km santai'},{id:'w3a2',t:'4×100m strides di akhir'},{id:'w3a3',t:'Istirahat 60 detik antar stride'}]},
+    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w3b1',t:'Bulgarian split squat 3×12'},{id:'w3b2',t:'Romanian deadlift (ransel) 3×12'},{id:'w3b3',t:'Wall sit 3×45 detik'},{id:'w3b4',t:'Calf raises slow 3×25'},{id:'w3b5',t:'Hip flexor stretch 2×60 detik'}]},
+    {day:'Hari C',type:'long',dur:'2.5–3 jam',tasks:[{id:'w3c1',t:'Long run 20km trail/campuran'},{id:'w3c2',t:'Masukkan 800m+ EG'},{id:'w3c3',t:'Nutrition: makan tiap 45 menit'},{id:'w3c4',t:'Bawa air 1.5L + 3 gel'},{id:'w3c5',t:'Simpan 20% energi di akhir'}]},
+    {day:'Hari D (B2B)',type:'trail',dur:'90–120 menit',tasks:[{id:'w3d1',t:'Lari 15km kaki lelah dari kemarin'},{id:'w3d2',t:'Ini latihan mental — pace tidak penting'},{id:'w3d3',t:'Hiking uphill, lari flat/downhill'},{id:'w3d4',t:'Nutrition pagi sebelum lari'}]},
+   ],gear:[{id:'g3a',t:'Test real food saat lari (pisang, kurma, nasi)'},{id:'g3b',t:'Vest nyaman 3+ jam?'}]},
+
+  {w:4,p:1,dr:'20 Apr – 26 Apr',title:'Recovery Week 🛌',km:25,eg:400,notes:'Recovery week = adaptasi terjadi! Tidur cukup, makan bergizi, kaki segar untuk Fase 2.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'35 menit',tasks:[{id:'w4a1',t:'Lari 7km sangat santai'},{id:'w4a2',t:'Jika lelah — jalan cepat 45 menit'}]},
+    {day:'Hari B',type:'strength',dur:'40 menit',tasks:[{id:'w4b1',t:'Yoga / stretching full body 20 menit'},{id:'w4b2',t:'Bodyweight squat 2×15'},{id:'w4b3',t:'Hip mobility drills 10 menit'},{id:'w4b4',t:'Foam rolling betis, paha, IT band'}]},
+    {day:'Hari C',type:'trail',dur:'60 menit',tasks:[{id:'w4c1',t:'Trail santai 10–12km, 300m EG'},{id:'w4c2',t:'Nikmati — tidak ada tekanan'},{id:'w4c3',t:'Evaluasi gear'}]},
+   ],gear:[{id:'g4a',t:'Evaluasi kondisi tubuh — nyeri tidak normal?'},{id:'g4b',t:'Rencanakan rute Fase 2'}]},
+
+  {w:5,p:2,dr:'27 Apr – 3 Mei',title:'Naik Level',km:55,eg:2000,notes:'Fase 2 — EG meningkat signifikan. Hiking di tanjakan curam itu STRATEGI, bukan kelemahan.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'55 menit',tasks:[{id:'w5a1',t:'Lari 12km pace nyaman'},{id:'w5a2',t:'2×10 menit tempo ringan di tengah'}]},
+    {day:'Hari B',type:'strength',dur:'50 menit',tasks:[{id:'w5b1',t:'Jump squat 3×10'},{id:'w5b2',t:'Step-up with knee drive 3×12'},{id:'w5b3',t:'Single-leg deadlift 3×10'},{id:'w5b4',t:'Bear crawl 3×20m'},{id:'w5b5',t:'Plank with reach 3×12'}]},
+    {day:'Hari C',type:'long',dur:'3–3.5 jam',tasks:[{id:'w5c1',t:'Trail 22–24km dengan 1200–1400m EG'},{id:'w5c2',t:'Test poles — mulai biasakan'},{id:'w5c3',t:'Nutrition tiap 40 mnt, electrolyte tiap 30 mnt'},{id:'w5c4',t:'Hiking uphill agresif'}]},
+    {day:'Hari D (B2B)',type:'trail',dur:'2–2.5 jam',tasks:[{id:'w5d1',t:'Trail 16–18km dengan 600m EG'},{id:'w5d2',t:'Perhatikan gejala overuse'},{id:'w5d3',t:'Foam roll + stretching wajib setelahnya'}]},
+   ],gear:[{id:'g5a',t:'Latihan rutin dengan trekking poles'},{id:'g5b',t:'Test rain jacket'},{id:'g5c',t:'Cek baterai cadangan headlamp'}]},
+
+  {w:6,p:2,dr:'4 Mei – 10 Mei',title:'Volume Tinggi',km:62,eg:2500,notes:'Tidur 8 jam = latihan wajib, sama pentingnya dengan lari.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'60 menit',tasks:[{id:'w6a1',t:'Lari 12km santai'},{id:'w6a2',t:'Running drills: high knees, butt kicks, A-skip'},{id:'w6a3',t:'4×20 detik hill sprint pendek'}]},
+    {day:'Hari B',type:'strength',dur:'55 menit',tasks:[{id:'w6b1',t:'Squat 4×20'},{id:'w6b2',t:'Reverse lunge 4×15'},{id:'w6b3',t:'Single-leg calf raise 4×25'},{id:'w6b4',t:'Dead bug 3×15'},{id:'w6b5',t:'Bird dog 3×15'},{id:'w6b6',t:'Glute bridge march 3×20'}]},
+    {day:'Hari C',type:'long',dur:'3.5–4 jam',tasks:[{id:'w6c1',t:'Trail 28–30km dengan 1500–1800m EG'},{id:'w6c2',t:'Bawa real food: nasi kepal / kurma / pisang'},{id:'w6c3',t:'Night segment: 30 menit terakhir pakai headlamp'},{id:'w6c4',t:'Jalan terus meski pelan di akhir'}]},
+    {day:'Hari D',type:'easy',dur:'40 menit',tasks:[{id:'w6d1',t:'Lari 8–10km sangat santai'},{id:'w6d2',t:'Evaluasi tanda overtraining'}]},
+   ],gear:[{id:'g6a',t:'Test headlamp malam minimal 30 menit'},{id:'g6b',t:'Cek kaus kaki — ada blister?'}]},
+
+  {w:7,p:2,dr:'11 Mei – 17 Mei',title:'B2B Besar Pertama',km:70,eg:3200,notes:'⚠️ Minggu terberat Fase 2. Selesaikan B2B ini = kamu sudah buktikan kesiapan.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'45 menit',tasks:[{id:'w7a1',t:'Lari 10km ringan — simpan energi'},{id:'w7a2',t:'Tidur cukup malam ini'}]},
+    {day:'Hari B',type:'strength',dur:'40 menit',tasks:[{id:'w7b1',t:'Maintenance strength — bukan push!'},{id:'w7b2',t:'Squat 2×15, Lunge 2×12, Core 2×15'},{id:'w7b3',t:'Foam rolling dan stretching'}]},
+    {day:'Hari C ⚡',type:'long',dur:'4–5 jam',tasks:[{id:'w7c1',t:'30–32km trail dengan 2000m+ EG'},{id:'w7c2',t:'SEMUA gear race: vest, poles, headlamp'},{id:'w7c3',t:'Simulasi nutrition race: makan tiap 40 mnt'},{id:'w7c4',t:'Include 1 jam lari/jalan setelah gelap'},{id:'w7c5',t:'Target: selesai kondisi bisa jalan normal'}]},
+    {day:'Hari D (B2B)',type:'trail',dur:'3–3.5 jam',tasks:[{id:'w7d1',t:'25km dengan kaki sisa kemarin'},{id:'w7d2',t:'Mulai jam yang sama seperti race time'},{id:'w7d3',t:'Ini berat — normal. Teruslah bergerak.'},{id:'w7d4',t:'Post-run: makan besar + istirahat total'}]},
+   ],gear:[{id:'g7a',t:'Full gear test: vest, poles, headlamp, p3k, rain jacket'},{id:'g7b',t:'Test nutrition real food 4 jam+'}]},
+
+  {w:8,p:2,dr:'18 Mei – 24 Mei',title:'Recovery Week 🛌',km:30,eg:600,notes:'Tubuh membangun ulang. Jangan tambah volume!',
+   days:[
+    {day:'Hari A',type:'easy',dur:'35 menit',tasks:[{id:'w8a1',t:'Lari 7km atau jalan 45 menit'},{id:'w8a2',t:'Perhatikan sinyal tubuh'}]},
+    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w8b1',t:'Yoga / stretching 30 menit'},{id:'w8b2',t:'Foam rolling: betis, hamstring, quad, IT band'},{id:'w8b3',t:'Hip flexor & piriformis stretch'}]},
+    {day:'Hari C',type:'trail',dur:'75 menit',tasks:[{id:'w8c1',t:'Trail ringan 12–14km, 400m EG'},{id:'w8c2',t:'Evaluasi gear'},{id:'w8c3',t:'Visualisasi race day'}]},
+   ],gear:[{id:'g8a',t:'Order gear kurang: kaus kaki, gel, electrolyte'},{id:'g8b',t:'Pastikan poles kondisi baik'}]},
+
+  {w:9,p:2,dr:'25 Mei – 31 Mei',title:'Race Simulation',km:60,eg:2800,notes:'Race simulation = latihan paling berharga. Cari weakness SEKARANG.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'65 menit',tasks:[{id:'w9a1',t:'Lari 13km: 8km santai + 3km tempo + 2km CD'},{id:'w9a2',t:'Tempo = "comfortably hard"'}]},
+    {day:'Hari B',type:'strength',dur:'50 menit',tasks:[{id:'w9b1',t:'Single-leg squat 3×12'},{id:'w9b2',t:'Step-down eccentric 3×15'},{id:'w9b3',t:'Hip thrust 3×15'},{id:'w9b4',t:'Copenhagen plank 3×20 detik'},{id:'w9b5',t:'Ankle stability drill 3×15'}]},
+    {day:'Hari C 🎯',type:'long',dur:'8–10 jam',tasks:[{id:'w9c1',t:'Mulai jam 4–5 pagi (simulasi race start)'},{id:'w9c2',t:'30–35km dengan 2000m+ EG'},{id:'w9c3',t:'FULL race gear — tidak ada yang ditinggal'},{id:'w9c4',t:'Makan & minum persis rencana race'},{id:'w9c5',t:'Akhiri pakai headlamp minimal 1 jam'},{id:'w9c6',t:'Aid station simulasi: stop 5 menit tiap 10km'}]},
+    {day:'Hari D',type:'easy',dur:'30 menit',tasks:[{id:'w9d1',t:'Jalan 30 menit atau jog 5–6km'},{id:'w9d2',t:'Evaluasi race simulation'}]},
+   ],gear:[{id:'g9a',t:'Mandatory gear: sudah lengkap?'},{id:'g9b',t:'Test semua makanan di perut saat jalan lama'},{id:'g9c',t:'Powerbank & kabel charger ready'}]},
+
+  {w:10,p:3,dr:'1 Jun – 7 Jun',title:'⚡ PEAK WEEK',km:80,eg:4200,notes:'🏔️ INI PUNCAKNYA. Selesaikan minggu ini dan kamu siap race.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'70 menit',tasks:[{id:'w10a1',t:'Lari 12km + 6×2 menit hill repeat'},{id:'w10a2',t:'Istirahat 90 detik antar repeat'},{id:'w10a3',t:'Simpan energi untuk B2B akhir minggu'}]},
+    {day:'Hari B',type:'strength',dur:'40 menit',tasks:[{id:'w10b1',t:'Squat 3×15, Lunge 3×12, Glute bridge 3×20'},{id:'w10b2',t:'Core: plank, dead bug, bird dog'},{id:'w10b3',t:'Maintenance saja — tidak ada baru'}]},
+    {day:'Hari C 🔥',type:'long',dur:'5–6 jam',tasks:[{id:'w10c1',t:'35–38km trail dengan 2500–3000m EG'},{id:'w10c2',t:'Long run terpanjang — hormati jaraknya'},{id:'w10c3',t:'Full gear, full nutrition protocol'},{id:'w10c4',t:'Hiking tanjakan curam (simulasi km 40–80)'},{id:'w10c5',t:'Night run: minimal 1.5 jam dalam gelap'}]},
+    {day:'Hari D (B2B)',type:'trail',dur:'3–4 jam',tasks:[{id:'w10d1',t:'22–25km, 1200m EG dengan kaki sisa kemarin'},{id:'w10d2',t:'Simulasi km 70–95 race secara fisiologis'},{id:'w10d3',t:'Mental strong — ini puncak latihanmu'},{id:'w10d4',t:'Post-run: makan besar, tidur awal'}]},
+   ],gear:[{id:'g10a',t:'Mandatory gear sudah dicoba dan nyaman'},{id:'g10b',t:'Nutrition plan final'},{id:'g10c',t:'Emergency contact list dibuat'}]},
+
+  {w:11,p:3,dr:'8 Jun – 14 Jun',title:'Post-Peak Recovery',km:45,eg:1500,notes:'Fokus teknik descent — turunan buruk bisa hancurkan lutut di km 70+.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'40 menit',tasks:[{id:'w11a1',t:'Lari 8–10km sangat santai'},{id:'w11a2',t:'Tidak ada target'}]},
+    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w11b1',t:'Yoga recovery 20 menit'},{id:'w11b2',t:'Foam rolling intensif'},{id:'w11b3',t:'Stretch hip, hamstring, betis, quad'}]},
+    {day:'Hari C',type:'trail',dur:'2 jam',tasks:[{id:'w11c1',t:'Trail 16–18km fokus TEKNIK TURUN'},{id:'w11c2',t:'Short fast steps — jangan rem dengan tumit'},{id:'w11c3',t:'Look 3–5 meter ke depan saat descent'},{id:'w11c4',t:'Poles untuk balance turunan curam'}]},
+    {day:'Hari D',type:'easy',dur:'35 menit',tasks:[{id:'w11d1',t:'Lari 7–8km sangat santai'},{id:'w11d2',t:'Visualisasi: bayangkan finish line'}]},
+   ],gear:[{id:'g11a',t:'Final gear check'},{id:'g11b',t:'Buat list packing race day'}]},
+
+  {w:12,p:4,dr:'15 Jun – 21 Jun',title:'Taper Dimulai',km:38,eg:1000,notes:'Volume turun, intensitas dipertahankan. Normal merasa berat — itu bukan masalah.',
+   days:[
+    {day:'Hari A',type:'easy',dur:'45 menit',tasks:[{id:'w12a1',t:'Lari 10km santai'},{id:'w12a2',t:'2×5 menit race pace di tengah'}]},
+    {day:'Hari B',type:'strength',dur:'35 menit',tasks:[{id:'w12b1',t:'Squat 2×15, Lunge 2×12 — ringan'},{id:'w12b2',t:'Core 15 menit'},{id:'w12b3',t:'Stretch 15 menit'}]},
+    {day:'Hari C',type:'trail',dur:'2 jam',tasks:[{id:'w12c1',t:'Trail 15–16km dengan 700m EG'},{id:'w12c2',t:'Pace nyaman, nikmati jalur'},{id:'w12c3',t:'Practice poles & race gear'}]},
+   ],gear:[{id:'g12a',t:'Buat race plan: target waktu tiap checkpoint'},{id:'g12b',t:'Pesan makanan carbo load pre-race'}]},
+
+  {w:13,p:4,dr:'22 Jun – 28 Jun',title:'Sharpening',km:25,eg:600,notes:'Tidur 8–9 jam = latihan utama minggu ini. Volume rendah sudah benar!',
+   days:[
+    {day:'Hari A',type:'easy',dur:'40 menit',tasks:[{id:'w13a1',t:'Lari 8km santai'},{id:'w13a2',t:'6×20 detik strides di akhir'}]},
+    {day:'Hari B',type:'strength',dur:'25 menit',tasks:[{id:'w13b1',t:'Glute activation: clamshells, band walks'},{id:'w13b2',t:'Hip flexor stretch'},{id:'w13b3',t:'Light squat 2×10'}]},
+    {day:'Hari C',type:'trail',dur:'75 menit',tasks:[{id:'w13c1',t:'Trail 10–12km ringan'},{id:'w13c2',t:'Pakai semua race gear — final comfort check'},{id:'w13c3',t:'Cek drop bag strategy'}]},
+   ],gear:[{id:'g13a',t:'Packing race bag 80% selesai'},{id:'g13b',t:'Konfirmasi akomodasi & transportasi'},{id:'g13c',t:'Carbo loading mulai 3 hari sebelum race'}]},
+
+  {w:14,p:4,dr:'29 Jun – 3 Jul 🏁',title:'RACE WEEK',km:10,eg:200,notes:'Tidak ada yang bisa dilatih lagi. Semua sudah tersimpan di dalam tubuhmu. Percayai prosesnya.',
+   days:[
+    {day:'29 Jun',type:'easy',dur:'20 menit',tasks:[{id:'w14a1',t:'Jalan/jog 20 menit sangat santai'},{id:'w14a2',t:'4×30 detik strides'},{id:'w14a3',t:'Banyak karbohidrat hari ini'}]},
+    {day:'30 Jun',type:'rest',dur:'Full rest',tasks:[{id:'w14b1',t:'Istirahat total atau jalan 15 menit'},{id:'w14b2',t:'Finalisasi packing race bag'},{id:'w14b3',t:'Makan carbo besar: nasi, pasta, kentang'},{id:'w14b4',t:'Tidur awal — target 8 jam'}]},
+    {day:'1 Jul',type:'rest',dur:'Travel/Check-in',tasks:[{id:'w14c1',t:'Berangkat ke lokasi race'},{id:'w14c2',t:'Race briefing / check-in'},{id:'w14c3',t:'Cek ulang mandatory gear'},{id:'w14c4',t:'Makan siang besar, makan malam sedang'},{id:'w14c5',t:'Tidur jam 9 malam'}]},
+    {day:'2 Jul',type:'rest',dur:'Pre-Race',tasks:[{id:'w14d1',t:'Bangun, sarapan ringan'},{id:'w14d2',t:'Persiapan drop bag'},{id:'w14d3',t:'Tidur siang jika memungkinkan'},{id:'w14d4',t:'Brief check semua gear'},{id:'w14d5',t:'Tidur jam 8 malam — besok RACE!'}]},
+    {day:'3 Jul 🏁',type:'race',dur:'~24–28 jam',tasks:[{id:'w14e1',t:'Bangun 2–3 jam sebelum start, sarapan familiar'},{id:'w14e2',t:'Arrive early, gear check, mental calm'},{id:'w14e3',t:'Start PELAN — ini marathon bukan sprint'},{id:'w14e4',t:'Makan & minum setiap 40 menit tanpa gagal'},{id:'w14e5',t:'Hiking tanjakan curam — poles aktif'},{id:'w14e6',t:'Km 80+ berat? Normal. Teruslah bergerak.'},{id:'w14e7',t:'🎉 FINISH — kamu luar biasa!'}]},
+   ],gear:[{id:'g14a',t:'Mandatory gear: 100% ready'},{id:'g14b',t:'Nutrition vest/drop bag: packed'},{id:'g14c',t:'Emergency contact sudah dikabari'},{id:'g14d',t:'Headlamp + backup: full charge'}]},
+];
+
+const GEAR_MASTER=[
+  {cat:'⚠️ Mandatory Race Gear',items:[{id:'gm1',t:'Headlamp utama + spare baterai'},{id:'gm2',t:'Emergency blanket (mylar)'},{id:'gm3',t:'Rain jacket waterproof'},{id:'gm4',t:'Peluit'},{id:'gm5',t:'Kotak P3K'},{id:'gm6',t:'Powerbank + kabel'},{id:'gm7',t:'HP / GPS — terisi penuh'},{id:'gm8',t:'Identitas & medical info card'}]},
+  {cat:'👟 Running Gear',items:[{id:'gm9',t:'Trail shoes — sudah break-in'},{id:'gm10',t:'Kaus kaki anti-blister'},{id:'gm11',t:'Running vest 8–12L'},{id:'gm12',t:'Trekking poles'},{id:'gm13',t:'Topi / buff'},{id:'gm14',t:'Sunglasses'},{id:'gm15',t:'Gaiters'}]},
+  {cat:'🍌 Nutrition & Hydration',items:[{id:'gm16',t:'Gel: min 1/jam (target 20–28 gel)'},{id:'gm17',t:'Real food: kurma, pisang, nasi, bars'},{id:'gm18',t:'Electrolyte tablet/sachet'},{id:'gm19',t:'Air 1.5L dalam vest'},{id:'gm20',t:'Anti-nausea'}]},
+  {cat:'👕 Pakaian',items:[{id:'gm21',t:'Baselayer moisture-wicking'},{id:'gm22',t:'Celana trail / compression'},{id:'gm23',t:'Midlayer untuk malam'},{id:'gm24',t:'Sarung tangan ringan'},{id:'gm25',t:'Spare kaus kaki'}]},
+  {cat:'💊 Perawatan',items:[{id:'gm26',t:'Body Glide / Vaseline'},{id:'gm27',t:'Kinesio tape'},{id:'gm28',t:'Leukotape / Compeed'},{id:'gm29',t:'Ibuprofen / pain reliever'}]},
+];
+
+// ════════════════════════════════════
+// STATE
+// ════════════════════════════════════
+const LS_KEY='ultra116_v2', LS_GAS='ultra116_gas_url';
+let checks={}, gasUrl='', syncQueue={}, syncTimer=null, activeWeek=1;
+
+function loadLocal(){try{checks=JSON.parse(localStorage.getItem(LS_KEY)||'{}');}catch{checks={};} gasUrl=localStorage.getItem(LS_GAS)||'';}
+function saveLocal(){localStorage.setItem(LS_KEY,JSON.stringify(checks));}
+
+// ── Sync UI ──
+function setSyncUI(state,label){
+  const dot=document.getElementById('sdot'), lbl=document.getElementById('slabel'), bar=document.getElementById('sync-bar');
+  dot.className='sdot '+state;
+  lbl.textContent=label||{syncing:'Menyimpan...',ok:'Tersinkron',err:'Gagal sync','':'Tidak terhubung'}[state]||label;
+  bar.className=state;
+  if(state==='ok')setTimeout(()=>{bar.className='';},2500);
+}
+
+// ── GAS SETUP ──
+function saveGasUrl(){
+  const val=document.getElementById('gas-input').value.trim();
+  const err=document.getElementById('gas-err');
+  if(!val.includes('script.google.com')){err.classList.add('show');return;}
+  err.classList.remove('show');
+  gasUrl=val; localStorage.setItem(LS_GAS,gasUrl);
+  document.getElementById('setup-banner').classList.remove('show');
+  setSyncUI('syncing','Menghubungkan...');
+  pullFromGas();
+}
+function manualSync(){if(gasUrl)pullFromGas();else document.getElementById('setup-banner').classList.toggle('show');}
+
+// ── PULL ──
+async function pullFromGas(){
+  if(!gasUrl)return;
+  setSyncUI('syncing','Mengambil data...');
+  try{
+    const res=await fetch(gasUrl+'?t='+Date.now());
+    const data=await res.json();
+    if(data.ok&&data.checks){
+      Object.assign(checks,data.checks);
+      saveLocal(); refreshAllUI();
+      setSyncUI('ok','Tersinkron · '+ftime(new Date()));
+      document.getElementById('setup-banner').classList.remove('show');
+    }else setSyncUI('err',data.error||'Error');
+  }catch{setSyncUI('err','Gagal terhubung');}
+}
+
+// ── PUSH (queue + debounce) ──
+function queuePush(id,val){
+  if(!gasUrl)return;
+  syncQueue[id]=val; clearTimeout(syncTimer);
+  setSyncUI('syncing');
+  syncTimer=setTimeout(async()=>{
+    const entries=Object.entries(syncQueue); syncQueue={};
+    try{
+      for(const[id,checked]of entries){
+        await fetch(gasUrl,{method:'POST',body:JSON.stringify({id,checked}),headers:{'Content-Type':'application/json'}});
+      }
+      setSyncUI('ok','Tersimpan · '+ftime(new Date()));
+    }catch{setSyncUI('err','Gagal menyimpan');}
+  },700);
+}
+function ftime(d){return d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});}
+
+// ════════════════════════════════════
+// COUNTDOWN (1 detik)
+// ════════════════════════════════════
+function tick(){
+  const diff=RACE_DATE-new Date();
+  if(diff<=0){['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0');return;}
+  const d=Math.floor(diff/86400000), h=Math.floor(diff%86400000/3600000),
+        m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
+  document.getElementById('cd-d').textContent=d;
+  document.getElementById('cd-h').textContent=pad(h);
+  document.getElementById('cd-m').textContent=pad(m);
+  document.getElementById('cd-s').textContent=pad(s);
+  const col=d<=14?'#ff7040':d<=30?'#f5c842':'#39d98a';
+  ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).style.color=col);
+}
+function pad(n){return String(n).padStart(2,'0');}
+
+// ════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════
+function phaseColor(pid){return PHASES.find(p=>p.id===pid)?.color||'#fff';}
+function phaseOfWeek(wn){return PHASES.find(p=>p.weeks.includes(wn))?.id||1;}
+function curWeek(){const now=new Date(),s=new Date('2025-03-30');if(now<s)return 1;return Math.min(Math.max(Math.floor((now-s)/604800000)+1,1),14);}
+function wkProg(w){const ids=[...w.days.flatMap(d=>d.tasks.map(t=>t.id)),...w.gear.map(g=>g.id)];const done=ids.filter(id=>checks[id]).length;return{done,total:ids.length,pct:ids.length?Math.round(done/ids.length*100):0};}
+function overallPct(){let tot=0,done=0;WEEKS.forEach(w=>{const p=wkProg(w);tot+=p.total;done+=p.done;});GEAR_MASTER.forEach(s=>s.items.forEach(i=>{tot++;if(checks[i.id])done++;}));return tot?Math.round(done/tot*100):0;}
+
+// ════════════════════════════════════
+// TOGGLE
+// ════════════════════════════════════
+function toggle(id,accent){
+  checks[id]=!checks[id]; saveLocal(); queuePush(id,checks[id]);
+  document.querySelectorAll(`.check-item[data-id="${id}"]`).forEach(el=>{
+    el.classList.toggle('checked',checks[id]);
+    const box=el.querySelector('.check-box');
+    box.style.background=checks[id]?accent:''; box.style.borderColor=checks[id]?accent:'';
+  });
+  refreshAllUI();
+}
+
+function refreshAllUI(){
+  const pct=overallPct();
+  document.getElementById('overall-pct').textContent=pct+'%';
+  document.getElementById('overall-fill').style.width=pct+'%';
+  document.getElementById('hero-fill').style.width=pct+'%';
+  document.getElementById('hero-pct').textContent=pct+'%';
+
+  WEEKS.forEach(w=>{
+    const {pct:wp}=wkProg(w); const col=phaseColor(w.p);
+    // overview cell
+    const cell=document.getElementById(`wk-${w.w}`);
+    if(cell){
+      const el=cell.querySelector('.wk-num');
+      if(wp===100){el.textContent='✓';el.style.color=col;cell.style.background=col+'22';}
+      else if(wp>0){el.textContent=wp+'%';el.style.color=col;el.style.fontSize='10px';}
+      else{el.textContent=w.w;el.style.color='rgba(232,237,242,0.4)';el.style.fontSize='14px';}
+    }
+    // pill
+    const pill=document.getElementById(`pl-${w.w}`);
+    if(pill){
+      if(w.w===activeWeek){pill.style.background=col;pill.style.color='#000';}
+      else if(wp===100){pill.style.background=col+'33';pill.style.color=col;}
+      else{pill.style.background='var(--surface2)';pill.style.color='var(--muted)';}
+      pill.textContent=wp===100?'✓':w.w;
+    }
+    // week header
+    const whf=document.getElementById(`whf-${w.w}`), whp=document.getElementById(`whp-${w.w}`);
+    if(whf)whf.style.width=wp+'%'; if(whp){whp.textContent=wp+'% selesai';whp.style.color=col;}
+    // day pcts
+    w.days.forEach((d,di)=>{
+      const ids=d.tasks.map(t=>t.id); const dd=ids.filter(id=>checks[id]).length; const dp=ids.length?Math.round(dd/ids.length*100):0;
+      const dtype=DT[d.type]||DT.easy;
+      const pe=document.getElementById(`dp-${w.w}-${di}`), se=document.getElementById(`ds-${w.w}-${di}`), fe=document.getElementById(`df-${w.w}-${di}`);
+      if(pe){pe.textContent=dp+'%';pe.style.color=dp===100?'#39d98a':dtype.c;}
+      if(se)se.textContent=`${dd}/${ids.length}`; if(fe)fe.style.width=dp+'%';
+    });
+  });
+  // gear
+  GEAR_MASTER.forEach((sec,si)=>{
+    const done=sec.items.filter(i=>checks[i.id]).length; const pct=Math.round(done/sec.items.length*100);
+    const f=document.getElementById(`gf-${si}`), c=document.getElementById(`gc-${si}`);
+    if(f)f.style.width=pct+'%'; if(c){c.textContent=`${done}/${sec.items.length}`;c.style.color=pct===100?'#39d98a':'#f5c842';}
+  });
+}
+
+// ════════════════════════════════════
+// TABS
+// ════════════════════════════════════
+function switchTab(n){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['overview','training','gear'][i]===n));
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.toggle('active',el.id==='tab-'+n));
+}
+
+// ════════════════════════════════════
+// CHECK ITEM
+// ════════════════════════════════════
+function mkCheck(id,text,accent){
+  const ok=!!checks[id];
+  const btn=document.createElement('button');
+  btn.className='check-item'+(ok?' checked':''); btn.dataset.id=id;
+  btn.innerHTML=`<span class="check-box" style="${ok?`background:${accent};border-color:${accent}`:''}"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="check-text">${text}</span>`;
+  btn.addEventListener('click',()=>toggle(id,accent));
+  return btn;
+}
+
+// ════════════════════════════════════
+// OVERVIEW
+// ════════════════════════════════════
+function renderOverview(){
+  // phases
+  const pg=document.getElementById('phase-grid');
+  PHASES.forEach(p=>{const c=document.createElement('div');c.className='phase-card';c.innerHTML=`<div class="phase-dot" style="background:${p.color}"></div><div class="phase-name" style="color:${p.color}">F${p.id} — ${p.name}</div><div class="phase-desc">${p.desc}</div>`;pg.appendChild(c);});
+  // week grid
+  const grid=document.getElementById('wk-grid'); const cw=curWeek();
+  WEEKS.forEach(w=>{
+    const {pct}=wkProg(w); const col=phaseColor(w.p); const isc=w.w===cw;
+    const cell=document.createElement('div'); cell.className='wk-cell'; cell.id=`wk-${w.w}`;
+    cell.style.borderColor=isc?col:'var(--border)'; cell.style.background=isc?col+'18':'var(--surface)';
+    const numTxt=pct===100?'✓':(pct>0?pct+'%':w.w);
+    cell.innerHTML=`<span class="wk-num" style="color:${pct>0?col:'rgba(232,237,242,0.4)'};font-size:${pct>0&&pct<100?'10px':'14px'}">${numTxt}</span>${isc?`<span style="font-size:9px;color:${col};margin-top:1px">NOW</span>`:''}`;
+    cell.addEventListener('click',()=>{activeWeek=w.w;switchTab('training');renderWeek();});
+    grid.appendChild(cell);
+  });
+  // stats
+  [{val:WEEKS.reduce((a,w)=>a+w.km,0)+' km',label:'Total KM',color:'#39d98a'},
+   {val:(WEEKS.reduce((a,w)=>a+w.eg,0)/1000).toFixed(1)+'k m',label:'Total EG',color:'#ff7040'},
+   {val:WEEKS.reduce((a,w)=>a+w.days.length,0)+' sesi',label:'Total Sesi',color:'#5bb4ff'},
+  ].forEach(s=>{const c=document.createElement('div');c.className='stat-card';c.innerHTML=`<div class="stat-val" style="color:${s.color}">${s.val}</div><div class="stat-label">${s.label}</div>`;document.getElementById('stats-row').appendChild(c);});
+}
+
+// ════════════════════════════════════
+// TRAINING
+// ════════════════════════════════════
+function changeWeek(dir){activeWeek=Math.min(14,Math.max(1,activeWeek+dir));renderWeek();}
+
+function renderPills(){
+  const c=document.getElementById('week-pills'); c.innerHTML='';
+  WEEKS.forEach(w=>{
+    const {pct}=wkProg(w); const col=phaseColor(w.p);
+    const pill=document.createElement('button'); pill.className='week-pill'; pill.id=`pl-${w.w}`;
+    if(w.w===activeWeek){pill.style.background=col;pill.style.color='#000';}
+    else if(pct===100){pill.style.background=col+'33';pill.style.color=col;}
+    pill.textContent=pct===100?'✓':w.w;
+    pill.addEventListener('click',()=>{activeWeek=w.w;renderWeek();});
+    c.appendChild(pill);
+  });
+}
+
+function renderWeek(){
+  const w=WEEKS.find(x=>x.w===activeWeek); const col=phaseColor(w.p); const {pct}=wkProg(w);
+  const pname=PHASES.find(p=>p.id===w.p)?.name||'';
+  document.getElementById('nav-title').textContent=`Minggu ${activeWeek}`;
+  renderPills();
+
+  const badges=[`<span class="badge" style="background:${col}18;color:${col}">${pname}</span>`];
+  if(w.title.toLowerCase().includes('recovery'))badges.push(`<span class="badge" style="background:rgba(91,180,255,0.15);color:#5bb4ff">🛌 Recovery</span>`);
+  if(w.title.toLowerCase().includes('peak'))badges.push(`<span class="badge" style="background:rgba(255,112,64,0.15);color:#ff7040">⚡ Peak</span>`);
+  if(activeWeek===14)badges.push(`<span class="badge" style="background:rgba(245,200,66,0.15);color:#f5c842">🏁 Race Week</span>`);
+
+  document.getElementById('week-content').innerHTML=`
+    <div class="week-header-card">
+      <div class="whc-top">
+        <div><div class="whc-badges">${badges.join('')}</div><div class="whc-title">${w.title}</div><div class="whc-date">📅 ${w.dr}</div></div>
+        <div class="whc-targets">
+          <div class="tgt"><div class="tgt-val" style="color:#fff">${w.km}</div><div class="tgt-label">km</div></div>
+          <div class="tgt"><div class="tgt-val" style="color:${col}">${w.eg.toLocaleString()}</div><div class="tgt-label">m EG</div></div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px">
+        <span>Progress</span><span id="whp-${w.w}" style="font-weight:700;color:${col}">${pct}% selesai</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="whf-${w.w}" style="width:${pct}%;background:${col}"></div></div>
+      <div class="whc-notes">${w.notes}</div>
+    </div>
+    <div class="days-grid" id="dg-${activeWeek}"></div>
+    <div class="week-gear" id="wg-${activeWeek}"><div class="wg-title">🎒 Gear Check Minggu Ini</div></div>`;
+
+  const dg=document.getElementById(`dg-${activeWeek}`);
+  w.days.forEach((d,di)=>{
+    const dtype=DT[d.type]||DT.easy; const ids=d.tasks.map(t=>t.id);
+    const done=ids.filter(id=>checks[id]).length; const dp=ids.length?Math.round(done/ids.length*100):0;
+    const card=document.createElement('div'); card.className='day-card';
+    card.style.background=dtype.c+'0d'; card.style.borderColor=dtype.c+'30';
+    card.innerHTML=`
+      <div class="dc-head">
+        <div><div class="dc-day" style="color:${dtype.c}">${d.day}</div><div class="dc-name">${dtype.l}</div><div class="dc-dur">⏱ ${d.dur}</div></div>
+        <div><div class="dc-pct-num" id="dp-${activeWeek}-${di}" style="color:${dp===100?'#39d98a':dtype.c}">${dp}%</div><div class="dc-pct-sub" id="ds-${activeWeek}-${di}">${done}/${ids.length}</div></div>
+      </div>
+      <div class="dc-mini-bar"><div class="dc-mini-fill" id="df-${activeWeek}-${di}" style="width:${dp}%;background:${dtype.c}"></div></div>
+      <div id="tl-${activeWeek}-${di}"></div>`;
+    dg.appendChild(card);
+    const tl=document.getElementById(`tl-${activeWeek}-${di}`);
+    d.tasks.forEach(t=>tl.appendChild(mkCheck(t.id,t.t,dtype.c)));
+  });
+  const wg=document.getElementById(`wg-${activeWeek}`);
+  w.gear.forEach(item=>wg.appendChild(mkCheck(item.id,item.t,'#9d7fff')));
+}
+
+// ════════════════════════════════════
+// GEAR
+// ════════════════════════════════════
+function renderGear(){
+  const c=document.getElementById('gear-master');
+  GEAR_MASTER.forEach((sec,si)=>{
+    const done=sec.items.filter(i=>checks[i.id]).length; const pct=Math.round(done/sec.items.length*100);
+    const s=document.createElement('div'); s.className='gear-section';
+    s.innerHTML=`<div class="gear-sec-head"><div class="gear-sec-title">${sec.cat}</div><div id="gc-${si}" style="font-size:12px;font-weight:700;color:${pct===100?'#39d98a':'#f5c842'}">${done}/${sec.items.length}</div></div><div class="gear-mini-bar"><div class="gear-mini-fill" id="gf-${si}" style="width:${pct}%"></div></div><div id="gi-${si}"></div>`;
+    c.appendChild(s);
+    const il=document.getElementById(`gi-${si}`);
+    sec.items.forEach(item=>il.appendChild(mkCheck(item.id,item.t,'#f5c842')));
+  });
+}
+
+// ════════════════════════════════════
+// INIT
+// ════════════════════════════════════
+loadLocal();
+activeWeek=curWeek();
+
+if(gasUrl){
+  document.getElementById('setup-banner').classList.remove('show');
+  document.getElementById('gas-input').value=gasUrl;
+  setSyncUI('syncing','Menghubungkan...');
+  pullFromGas();
+}
+
+tick(); setInterval(tick,1000);
+setInterval(()=>{if(gasUrl)pullFromGas();},60000);
+
+renderOverview(); renderWeek(); renderGear(); refreshAllUI();
+</script>
+</body>
+</html>
