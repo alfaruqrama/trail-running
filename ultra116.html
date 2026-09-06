@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultra 116 Tracker — 3 Juli 2025</title>
+<title>BTS 100K Tracker — 7 Nov 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&family=Barlow+Semi+Condensed:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -17,129 +16,129 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden;}
 
-/* SYNC BAR */
 #sync-bar{position:fixed;top:0;left:0;right:0;height:3px;z-index:1000;}
-#sync-bar.syncing{background:linear-gradient(90deg,var(–yellow),var(–green),var(–yellow));background-size:200%;animation:shimmer 1s infinite linear;}
-#sync-bar.ok{background:var(–green);animation:fadeBar 2s forwards;}
-#sync-bar.err{background:var(–orange);}
+#sync-bar.syncing{background:linear-gradient(90deg,var(--yellow),var(--green),var(--yellow));background-size:200%;animation:shimmer 1s infinite linear;}
+#sync-bar.ok{background:var(--green);animation:fadeBar 2s forwards;}
+#sync-bar.err{background:var(--orange);}
 @keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
 @keyframes fadeBar{0%{opacity:1}70%{opacity:1}100%{opacity:0}}
 
-/* SYNC CHIP */
-#sync-chip{display:flex;align-items:center;gap:6px;font-size:11px;color:var(–muted);background:var(–surface2);border:1px solid var(–border);padding:4px 10px;border-radius:20px;cursor:pointer;transition:border-color 0.2s;user-select:none;}
+#sync-chip{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:4px 10px;border-radius:20px;cursor:pointer;transition:border-color 0.2s;user-select:none;}
 #sync-chip:hover{border-color:rgba(255,255,255,0.15);}
-.sdot{width:7px;height:7px;border-radius:50%;background:var(–dim);flex-shrink:0;transition:background 0.3s;}
-.sdot.syncing{background:var(–yellow);animation:pulse 0.8s infinite;}
-.sdot.ok{background:var(–green);}
-.sdot.err{background:var(–orange);}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--dim);flex-shrink:0;transition:background 0.3s;}
+.sdot.syncing{background:var(--yellow);animation:pulse 0.8s infinite;}
+.sdot.ok{background:var(--green);}
+.sdot.err{background:var(--orange);}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
-/* SETUP BANNER */
 #setup-banner{background:rgba(245,200,66,0.07);border:1px solid rgba(245,200,66,0.22);border-radius:14px;padding:18px;margin-bottom:18px;display:none;}
 #setup-banner.show{display:block;}
-.sb-title{font-family:‘Barlow Condensed’,sans-serif;font-weight:700;font-size:16px;color:var(–yellow);margin-bottom:10px;}
-.sb-steps{font-size:13px;color:var(–muted);line-height:2;}
-.sb-steps code{font-family:monospace;font-size:12px;background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;color:var(–text);}
-.sb-steps a{color:var(–yellow);}
+.sb-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--yellow);margin-bottom:10px;}
+.sb-steps{font-size:13px;color:var(--muted);line-height:2;}
+.sb-steps code{font-family:monospace;font-size:12px;background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;color:var(--text);}
+.sb-steps a{color:var(--yellow);}
 .sb-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
-.sb-input{flex:1;min-width:200px;background:var(–surface2);border:1px solid rgba(245,200,66,0.3);color:var(–text);font-size:12px;font-family:monospace;padding:8px 12px;border-radius:8px;outline:none;}
-.sb-input:focus{border-color:var(–yellow);}
-.sb-input::placeholder{color:var(–dim);}
-.sb-btn{background:var(–yellow);color:#000;font-family:‘Barlow Condensed’,sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;padding:8px 18px;border-radius:8px;border:none;cursor:pointer;white-space:nowrap;}
+.sb-input{flex:1;min-width:200px;background:var(--surface2);border:1px solid rgba(245,200,66,0.3);color:var(--text);font-size:12px;font-family:monospace;padding:8px 12px;border-radius:8px;outline:none;}
+.sb-input:focus{border-color:var(--yellow);}
+.sb-input::placeholder{color:var(--dim);}
+.sb-btn{background:var(--yellow);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;padding:8px 18px;border-radius:8px;border:none;cursor:pointer;white-space:nowrap;}
 .sb-btn:hover{opacity:.85;}
-.sb-err{font-size:12px;color:var(–orange);margin-top:6px;display:none;}
+.sb-err{font-size:12px;color:var(--orange);margin-top:6px;display:none;}
 .sb-err.show{display:block;}
 
-/* COUNTDOWN HERO */
 .cd-hero{background:linear-gradient(135deg,#0a1020 0%,#0c1628 100%);border:1px solid rgba(57,217,138,0.14);border-radius:20px;padding:26px 22px;margin-bottom:16px;position:relative;overflow:hidden;}
-.cd-hero::before{content:’’;position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(57,217,138,0.07) 0%,transparent 70%);pointer-events:none;}
-.cd-hero-label{font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(–muted);margin-bottom:18px;}
+.cd-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(57,217,138,0.07) 0%,transparent 70%);pointer-events:none;}
+.cd-hero-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
 .cd-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .cd-block{flex:1;min-width:60px;max-width:90px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px 8px;text-align:center;}
-.cd-num{font-family:‘Barlow Condensed’,sans-serif;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1;transition:color .5s;}
-.cd-lbl{font-size:10px;color:var(–dim);margin-top:4px;letter-spacing:.12em;text-transform:uppercase;}
-.cd-sep{font-family:‘Barlow Condensed’,sans-serif;font-size:32px;font-weight:900;color:rgba(255,255,255,0.1);padding-bottom:16px;flex-shrink:0;}
+.cd-num{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,6vw,42px);font-weight:900;line-height:1;transition:color .5s;}
+.cd-lbl{font-size:10px;color:var(--dim);margin-top:4px;letter-spacing:.12em;text-transform:uppercase;}
+.cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:rgba(255,255,255,0.1);padding-bottom:16px;flex-shrink:0;}
 .cd-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;flex-wrap:wrap;gap:8px;}
-.cd-meta{font-size:13px;color:var(–muted);}
-.cd-meta strong{color:var(–text);}
+.cd-meta{font-size:13px;color:var(--muted);}
+.cd-meta strong{color:var(--text);}
 .cd-prog-wrap{display:flex;align-items:center;gap:8px;}
 .cd-prog-bar{width:100px;height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
-.cd-prog-fill{height:100%;background:linear-gradient(90deg,var(–green),var(–yellow));border-radius:4px;transition:width .6s ease;}
+.cd-prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--yellow));border-radius:4px;transition:width .6s ease;}
 
-/* HEADER */
-.header{padding:40px 20px 18px;border-bottom:1px solid var(–border);}
+.header{padding:40px 20px 18px;border-bottom:1px solid var(--border);}
 .header-inner{max-width:720px;margin:0 auto;}
-.label-tiny{font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(–muted);margin-bottom:8px;}
-.header h1{font-family:‘Barlow Condensed’,sans-serif;font-size:clamp(34px,8vw,56px);font-weight:900;line-height:1;color:#fff;}
-.header h1 span{color:var(–green);}
+.label-tiny{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.header h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(34px,8vw,56px);font-weight:900;line-height:1;color:#fff;}
+.header h1 span{color:var(--green);}
 .header-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center;}
-.meta-chip{font-size:12px;color:var(–muted);background:var(–surface2);border:1px solid var(–border);padding:4px 10px;border-radius:20px;}
+.meta-chip{font-size:12px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:4px 10px;border-radius:20px;}
 
 .overall-prog{max-width:720px;margin:0 auto;padding:14px 20px 0;}
-.prog-row{display:flex;justify-content:space-between;font-size:12px;color:var(–muted);margin-bottom:5px;}
+.prog-row{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px;}
 .prog-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;}
-.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(–green),var(–yellow));transition:width .6s ease;}
+.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--yellow));transition:width .6s ease;}
 
 .tabs{max-width:720px;margin:0 auto;padding:14px 20px 0;display:flex;gap:4px;}
-.tab-btn{background:transparent;border:1px solid transparent;color:var(–muted);font-family:‘Barlow Semi Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all .18s;text-transform:uppercase;}
-.tab-btn:hover{color:var(–text);background:var(–surface2);}
-.tab-btn.active{background:var(–surface2);border-color:var(–border);color:#fff;}
+.tab-btn{background:transparent;border:1px solid transparent;color:var(--muted);font-family:'Barlow Semi Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all .18s;text-transform:uppercase;}
+.tab-btn:hover{color:var(--text);background:var(--surface2);}
+.tab-btn.active{background:var(--surface2);border-color:var(--border);color:#fff;}
 
 .main{max-width:720px;margin:0 auto;padding:20px 20px 80px;}
 .tab-content{display:none;}
 .tab-content.active{display:block;animation:fadeIn .22s ease;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* OVERVIEW */
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:20px;}
+.info-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px;}
+.zone-row{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:7px 0;border-bottom:1px dashed var(--border);color:var(--muted);}
+.zone-row:last-child{border-bottom:none;}
+.zone-row b{color:var(--text);font-weight:600;}
+.info-note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:10px;font-style:italic;}
+
 .phase-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
 @media(min-width:520px){.phase-grid{grid-template-columns:repeat(4,1fr);}}
-.phase-card{border-radius:12px;padding:12px;border:1px solid var(–border);background:var(–surface);}
+.phase-card{border-radius:12px;padding:12px;border:1px solid var(--border);background:var(--surface);}
 .phase-dot{width:8px;height:8px;border-radius:50%;margin-bottom:8px;}
-.phase-name{font-family:‘Barlow Condensed’,sans-serif;font-weight:700;font-size:13px;color:#fff;}
-.phase-desc{font-size:11px;color:var(–muted);margin-top:4px;line-height:1.4;}
+.phase-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:#fff;}
+.phase-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4;}
 .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px;}
-.wk-cell{aspect-ratio:1;border-radius:8px;border:1px solid var(–border);background:var(–surface);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-family:‘Barlow Condensed’,sans-serif;}
+.wk-cell{aspect-ratio:1;border-radius:8px;border:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-family:'Barlow Condensed',sans-serif;}
 .wk-cell:hover{transform:scale(1.06);}
 .wk-cell .wk-num{font-size:14px;font-weight:900;}
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.stat-card{background:var(–surface);border:1px solid var(–border);border-radius:12px;padding:14px;}
-.stat-val{font-family:‘Barlow Condensed’,sans-serif;font-size:26px;font-weight:900;}
-.stat-label{font-size:11px;color:var(–muted);margin-top:4px;}
-.section-title{font-family:‘Barlow Condensed’,sans-serif;font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(–dim);margin-bottom:12px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;}
+.stat-label{font-size:11px;color:var(--muted);margin-top:4px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;}
 
-/* TRAINING */
 .week-nav{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
-.nav-btn{width:36px;height:36px;border-radius:8px;background:var(–surface2);border:1px solid var(–border);color:var(–text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-.nav-btn:hover{background:var(–surface);color:#fff;}
+.nav-btn{width:36px;height:36px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.nav-btn:hover{background:var(--surface);color:#fff;}
 .week-title-area{flex:1;text-align:center;}
-.wt-main{font-family:‘Barlow Condensed’,sans-serif;font-weight:900;font-size:20px;color:#fff;}
-.wt-sub{font-size:12px;color:var(–muted);}
+.wt-main{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;color:#fff;}
+.wt-sub{font-size:12px;color:var(--muted);}
 .week-pills{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin-bottom:18px;}
 .week-pills::-webkit-scrollbar{display:none;}
-.week-pill{flex-shrink:0;width:34px;height:34px;border-radius:8px;border:1px solid transparent;background:var(–surface2);color:var(–muted);font-family:‘Barlow Condensed’,sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.week-pill{flex-shrink:0;width:34px;height:34px;border-radius:8px;border:1px solid transparent;background:var(--surface2);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
 .week-pill:hover{color:#fff;}
 
-.week-header-card{background:var(–surface);border:1px solid var(–border);border-radius:16px;padding:20px;margin-bottom:14px;}
+.week-header-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;}
 .whc-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;}
 .whc-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;}
 .badge{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:20px;}
-.whc-title{font-family:‘Barlow Condensed’,sans-serif;font-size:28px;font-weight:900;color:#fff;}
-.whc-date{font-size:12px;color:var(–muted);margin-top:2px;}
+.whc-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;}
+.whc-date{font-size:12px;color:var(--muted);margin-top:2px;}
 .whc-targets{display:flex;gap:16px;}
 .tgt{text-align:right;}
-.tgt-val{font-family:‘Barlow Condensed’,sans-serif;font-size:22px;font-weight:900;}
-.tgt-label{font-size:11px;color:var(–dim);}
-.whc-notes{font-size:13px;color:var(–muted);line-height:1.6;font-style:italic;border-left:2px solid rgba(255,255,255,0.1);padding-left:12px;margin-top:12px;}
+.tgt-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;}
+.tgt-label{font-size:11px;color:var(--dim);}
+.whc-notes{font-size:13px;color:var(--muted);line-height:1.6;font-style:italic;border-left:2px solid rgba(255,255,255,0.1);padding-left:12px;margin-top:12px;}
 
 .days-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px;}
 @media(min-width:540px){.days-grid{grid-template-columns:repeat(2,1fr);}}
 .day-card{border-radius:14px;padding:16px;border:1px solid rgba(255,255,255,0.06);}
 .dc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
 .dc-day{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
-.dc-name{font-family:‘Barlow Condensed’,sans-serif;font-weight:700;font-size:17px;color:#fff;margin-top:2px;}
-.dc-dur{font-size:11px;color:var(–muted);margin-top:2px;}
-.dc-pct-num{font-family:‘Barlow Condensed’,sans-serif;font-size:26px;font-weight:900;text-align:right;}
-.dc-pct-sub{font-size:10px;color:var(–dim);text-align:right;}
+.dc-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;color:#fff;margin-top:2px;}
+.dc-dur{font-size:11px;color:var(--muted);margin-top:2px;}
+.dc-pct-num{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;text-align:right;}
+.dc-pct-sub{font-size:10px;color:var(--dim);text-align:right;}
 .dc-mini-bar{height:2px;border-radius:2px;background:rgba(255,255,255,0.08);margin-bottom:12px;overflow:hidden;}
 .dc-mini-fill{height:100%;border-radius:2px;transition:width .4s ease;}
 
@@ -150,36 +149,33 @@
 .check-item.checked .check-box{border-color:transparent;}
 .check-item.checked .check-box svg{display:block;}
 .check-text{font-size:13px;line-height:1.5;color:rgba(232,237,242,0.8);transition:all .2s;}
-.check-item.checked .check-text{color:var(–dim);text-decoration:line-through;}
+.check-item.checked .check-text{color:var(--dim);text-decoration:line-through;}
 
-.gear-section{background:var(–surface);border:1px solid var(–border);border-radius:14px;padding:16px;margin-bottom:12px;}
+.gear-section{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
 .gear-sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-.gear-sec-title{font-family:‘Barlow Semi Condensed’,sans-serif;font-weight:700;font-size:14px;color:#fff;}
+.gear-sec-title{font-family:'Barlow Semi Condensed',sans-serif;font-weight:700;font-size:14px;color:#fff;}
 .gear-mini-bar{height:2px;border-radius:2px;background:rgba(255,255,255,0.07);margin-bottom:12px;overflow:hidden;}
-.gear-mini-fill{height:100%;border-radius:2px;background:var(–yellow);transition:width .4s;}
-.week-gear{background:var(–surface);border:1px solid var(–border);border-radius:14px;padding:16px;}
-.wg-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(–muted);margin-bottom:10px;}
+.gear-mini-fill{height:100%;border-radius:2px;background:var(--yellow);transition:width .4s;}
+.week-gear{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;}
+.wg-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
 
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px;}
 </style>
-
 </head>
 <body>
 
 <div id="sync-bar"></div>
 
-<!-- HEADER -->
-
 <div class="header">
   <div class="header-inner">
     <div class="label-tiny">Ultra Trail Training Plan</div>
-    <h1>116KM · <span>7400M</span> EG</h1>
+    <h1>BTS <span>100K</span> · 4200M EG</h1>
     <div class="header-meta">
-      <span class="meta-chip">📅 30 Mar – 3 Jul 2025</span>
-      <span class="meta-chip">SMR 50K ✓ · 70K ✓ · 80K ✓</span>
-      <span class="meta-chip">14 Minggu</span>
+      <span class="meta-chip">📅 7 Sep – 7 Nov 2026</span>
+      <span class="meta-chip">🎯 BRODER 25K (B-race) 10 Okt</span>
+      <span class="meta-chip">9 Minggu</span>
       <div id="sync-chip" onclick="manualSync()" title="Klik untuk sync / setup">
         <span class="sdot" id="sdot"></span>
         <span id="slabel">Tidak terhubung</span>
@@ -204,76 +200,79 @@
 
 <div class="main">
 
-  <!-- OVERVIEW -->
-
   <div id="tab-overview" class="tab-content active">
 
-```
-<!-- COUNTDOWN -->
-<div class="cd-hero">
-  <div class="cd-hero-label">⏳ Menuju Race Day — 3 Juli 2025 · Flag Off 00:00</div>
-  <div class="cd-row">
-    <div class="cd-block"><div class="cd-num" id="cd-d">—</div><div class="cd-lbl">Hari</div></div>
-    <div class="cd-sep">:</div>
-    <div class="cd-block"><div class="cd-num" id="cd-h">—</div><div class="cd-lbl">Jam</div></div>
-    <div class="cd-sep">:</div>
-    <div class="cd-block"><div class="cd-num" id="cd-m">—</div><div class="cd-lbl">Menit</div></div>
-    <div class="cd-sep">:</div>
-    <div class="cd-block"><div class="cd-num" id="cd-s">—</div><div class="cd-lbl">Detik</div></div>
-  </div>
-  <div class="cd-footer">
-    <div class="cd-meta"><strong>Ultra Trail 116km · 7400m EG</strong><br><span style="font-size:11px">Flag Off 3 Jul 2025 · 00:00 WIB</span></div>
-    <div class="cd-prog-wrap">
-      <div class="cd-prog-bar"><div class="cd-prog-fill" id="hero-fill" style="width:0%"></div></div>
-      <span style="font-size:12px;color:var(--green);font-weight:700" id="hero-pct">0%</span>
+    <div class="cd-hero">
+      <div class="cd-hero-label">⏳ Menuju BTS 100K — 7 November 2026</div>
+      <div class="cd-row">
+        <div class="cd-block"><div class="cd-num" id="cd-d">—</div><div class="cd-lbl">Hari</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-h">—</div><div class="cd-lbl">Jam</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-m">—</div><div class="cd-lbl">Menit</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cd-s">—</div><div class="cd-lbl">Detik</div></div>
+      </div>
+      <div class="cd-footer">
+        <div class="cd-meta"><strong>BTS 100K · 4200m EG</strong><br><span style="font-size:11px">Cek jam flag-off resmi dari panitia — placeholder 00:00 WIB</span></div>
+        <div class="cd-prog-wrap">
+          <div class="cd-prog-bar"><div class="cd-prog-fill" id="hero-fill" style="width:0%"></div></div>
+          <span style="font-size:12px;color:var(--green);font-weight:700" id="hero-pct">0%</span>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- GAS SETUP -->
-<div id="setup-banner" class="show">
-  <div class="sb-title">⚙️ Hubungkan ke Google Sheets</div>
-  <div class="sb-steps">
-    <b>1.</b> Buka <a href="https://script.google.com" target="_blank">script.google.com</a> → <b>New Project</b><br>
-    <b>2.</b> Hapus semua kode → paste isi file <code>Code.gs</code> yang sudah didownload<br>
-    <b>3.</b> Klik <code>Extensions → Apps Script</code> atau langsung di script editor<br>
-    <b>4.</b> <code>Deploy → New deployment → Web app</code><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;Execute as: <code>Me</code> · Who has access: <code>Anyone</code> → <b>Deploy</b><br>
-    <b>5.</b> Copy URL web app → paste di sini:
-  </div>
-  <div class="sb-row">
-    <input class="sb-input" id="gas-input" type="url" placeholder="https://script.google.com/macros/s/AKfy.../exec">
-    <button class="sb-btn" onclick="saveGasUrl()">Connect →</button>
-  </div>
-  <div class="sb-err" id="gas-err">URL tidak valid. Pastikan URL dari Google Apps Script.</div>
-</div>
+    <div id="setup-banner">
+      <div class="sb-title">⚙️ Hubungkan ke Google Sheets (opsional)</div>
+      <div class="sb-steps">
+        <b>1.</b> Buka <a href="https://script.google.com" target="_blank">script.google.com</a> → <b>New Project</b><br>
+        <b>2.</b> Paste Apps Script sync (minta kalau butuh) → <code>Deploy → Web app</code><br>
+        <b>3.</b> Execute as: <code>Me</code> · Who has access: <code>Anyone</code> → <b>Deploy</b><br>
+        <b>4.</b> Copy URL web app → paste di sini:
+      </div>
+      <div class="sb-row">
+        <input class="sb-input" id="gas-input" type="url" placeholder="https://script.google.com/macros/s/AKfy.../exec">
+        <button class="sb-btn" onclick="saveGasUrl()">Connect →</button>
+      </div>
+      <div class="sb-err" id="gas-err">URL tidak valid. Pastikan URL dari Google Apps Script.</div>
+    </div>
 
-<div class="section-title" style="margin-top:4px">Fase Training</div>
-<div class="phase-grid" id="phase-grid"></div>
-<div class="section-title">Peta 14 Minggu — klik untuk buka</div>
-<div class="week-grid" id="wk-grid"></div>
-<div class="section-title">Statistik Program</div>
-<div class="stats-row" id="stats-row"></div>
-```
+    <div class="info-card">
+      <div class="info-card-title">📐 Zona Latihan (referensi, bukan angka mutlak)</div>
+      <div class="zone-row"><span><b>Z1 · Easy</b> — sangat santai, bisa ngobrol penuh</span><span>RPE 2-3/10</span></div>
+      <div class="zone-row"><span><b>Z2 · Aerobik</b> — mayoritas easy run & long run</span><span>RPE 4-5/10</span></div>
+      <div class="zone-row"><span><b>Z3 · Tempo/Climb</b> — "comfortably hard"</span><span>RPE 6-7/10</span></div>
+      <div class="zone-row"><span><b>Power hike (tanjakan)</b> — target kecepatan</span><span>5.5–6 km/jam</span></div>
+      <div class="zone-row"><span><b>Downhill terkontrol</b> — jangan ngerem tumit</span><span>8–9 km/jam</span></div>
+      <div class="info-note">Belum ada data HRmax pasti, jadi zona di atas pakai RPE + pace acuan dari histori kamu sendiri: BTS Ultra 70K (2960m EG) = rata-rata 13.4 menit/km, Mantra116 68K = rata-rata ±18 menit/km. Kalau watch kamu punya HRmax terukur, kabari — bisa aku ubah ke angka bpm yang lebih presisi.</div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-title">⛰️ Catatan Elevasi Surabaya</div>
+      <div class="info-note" style="margin-top:0">Surabaya relatif flat (data 12 bulan terakhir cuma ~637m EG/minggu di volume tinggi). Supaya climbing economy tetap kebentuk buat BTS (4200m EG), sesi hill/climb di plan ini bisa disiasati dengan: repeat tangga gedung/stadion, tanjakan overpass/jembatan layang, treadmill incline 10-15%, atau drive ke bukit terdekat (mis. arah Trawas/Pacet) buat sesi climbing besar di akhir pekan kalau shift memungkinkan.</div>
+    </div>
+
+    <div class="section-title" style="margin-top:4px">Fase Training</div>
+    <div class="phase-grid" id="phase-grid"></div>
+    <div class="section-title">Peta 9 Minggu — klik untuk buka</div>
+    <div class="week-grid" id="wk-grid"></div>
+    <div class="section-title">Statistik Program</div>
+    <div class="stats-row" id="stats-row"></div>
 
   </div>
-
-  <!-- TRAINING -->
 
   <div id="tab-training" class="tab-content">
     <div class="week-nav">
       <button class="nav-btn" onclick="changeWeek(-1)">‹</button>
       <div class="week-title-area">
         <div class="wt-main" id="nav-title">Minggu 1</div>
-        <div class="wt-sub">dari 14 minggu</div>
+        <div class="wt-sub">dari 9 minggu</div>
       </div>
       <button class="nav-btn" onclick="changeWeek(1)">›</button>
     </div>
     <div class="week-pills" id="week-pills"></div>
     <div id="week-content"></div>
   </div>
-
-  <!-- GEAR -->
 
   <div id="tab-gear" class="tab-content">
     <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6">
@@ -288,163 +287,114 @@
 // ════════════════════════════════════
 // DATA
 // ════════════════════════════════════
-const RACE_DATE=new Date('2025-07-03T00:00:00');
+const RACE_DATE=new Date('2026-11-07T00:00:00');
 const PHASES=[
-  {id:1,name:'Base Rebuild',weeks:[1,2,3,4],color:'#39d98a',desc:'Bangun kembali fondasi setelah deload 3 bulan'},
-  {id:2,name:'Specific Build',weeks:[5,6,7,8,9],color:'#f5c842',desc:'Tingkatkan EG & volume, simulasi race'},
-  {id:3,name:'Peak & Sim',weeks:[10,11],color:'#ff7040',desc:'Peak load — simulasi kondisi race nyata'},
-  {id:4,name:'Taper',weeks:[12,13,14],color:'#9d7fff',desc:'Turunkan beban, pertahankan sharpness'},
+  {id:1,name:'Rebuild & Sharpen',weeks:[1,2,3,4],color:'#39d98a',desc:'Konsolidasi volume, climbing economy, B2B priming menuju BRODER'},
+  {id:2,name:'BRODER: Race & Recover',weeks:[5,6],color:'#f5c842',desc:'Dress rehearsal 25K lalu recovery penuh'},
+  {id:3,name:'BTS Peak Block',weeks:[7],color:'#ff7040',desc:'Minggu terberat siklus — B2B, night run, full rehearsal'},
+  {id:4,name:'Taper & Race',weeks:[8,9],color:'#9d7fff',desc:'Turunkan beban, tajamkan, lalu BTS 100K'},
 ];
-const DT={easy:{c:'#39d98a',l:'Easy Run'},trail:{c:'#fb923c',l:'Trail / Hill'},strength:{c:'#5bb4ff',l:'Strength'},long:{c:'#ff4f4f',l:'Long Run'},rest:{c:'#6b7280',l:'Rest / Jalan'},race:{c:'#f5c842',l:'RACE DAY 🏁'}};
+const DT={easy:{c:'#39d98a',l:'Easy Run'},hill:{c:'#fb923c',l:'Hill / Climb'},strength:{c:'#5bb4ff',l:'Strength'},long:{c:'#ff4f4f',l:'Long Run'},b2b:{c:'#c026d3',l:'B2B Day 2'},rest:{c:'#6b7280',l:'Rest / Jalan'},race:{c:'#f5c842',l:'RACE DAY 🏁'}};
 
 const WEEKS=[
-  {w:1,p:1,dr:'30 Mar – 5 Apr',title:'Bangkit Lagi',km:30,eg:500,notes:'🎯 Target: COT 33 jam (wajib) | Sub-28 jam (Drawapala). Minggu ini hanya satu tujuan: gerak lagi setelah 3 bulan off. Jangan push — tubuh butuh adaptasi dulu.',
+  {w:1,p:1,dr:'7 – 13 Sep',title:'Konsolidasi',km:48,eg:700,notes:'⚠️ Minggu lalu km kamu spike ke 63km — bagus, tapi jangan lanjut naik dulu. Minggu ini turun ke 48km buat konsolidasi supaya nggak kena overuse, terutama lutut kanan. Fokus: reconnect rutinitas + rebuild eccentric strength.',
    days:[
-    {day:'Hari A',type:'easy',dur:'40 menit',tasks:[{id:'w1a1',t:'Lari santai 8km, pace nyaman (bisa ngobrol)'},{id:'w1a2',t:'Tidak ada target pace — cukup gerak'},{id:'w1a3',t:'Pemanasan 5 menit jalan kaki sebelumnya'}]},
-    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w1b1',t:'Squat bodyweight 3×15'},{id:'w1b2',t:'Lunges 3×12 per kaki'},{id:'w1b3',t:'Glute bridge 3×20'},{id:'w1b4',t:'Plank 3×45 detik'},{id:'w1b5',t:'Calf raises 3×20'}]},
-    {day:'Hari C',type:'trail',dur:'60–75 menit',tasks:[{id:'w1c1',t:'Cari rute tanjakan minimal 200m EG'},{id:'w1c2',t:'Hiking uphill, lari downhill pelan'},{id:'w1c3',t:'Total jarak ~10–12km'},{id:'w1c4',t:'Bawa air + 1 gel/snack'}]},
-    {day:'Hari D',type:'rest',dur:'Opsional',tasks:[{id:'w1d1',t:'Jalan kaki 20–30 menit (active recovery)'},{id:'w1d2',t:'Stretching 10 menit malam hari'}]},
-   ],gear:[{id:'g1a',t:'Cek kondisi trail shoes'},{id:'g1b',t:'Siapkan running vest / hydration pack'},{id:'g1c',t:'Stok gel / snack latihan'}]},
+    {day:'Hari A',type:'easy',dur:'50 menit',tasks:[{id:'w1a1',t:'Lari 10km Z2, cadence 170-175 spm'},{id:'w1a2',t:'RPE 4-5/10 — harus bisa ngobrol'}]},
+    {day:'Hari B',type:'strength',dur:'40 menit',tasks:[{id:'w1b1',t:'Single-leg squat 3×10 (fokus kontrol turun, ini kunci lutut)'},{id:'w1b2',t:'Step-down eccentric 3×10 per kaki, tempo lambat 3 detik turun'},{id:'w1b3',t:'Calf raise 3×20'},{id:'w1b4',t:'Glute bridge 3×20'},{id:'w1b5',t:'Plank 3×45 detik'}]},
+    {day:'Hari C',type:'hill',dur:'70 menit',tasks:[{id:'w1c1',t:'12-14km, cari tangga/overpass — 400m EG'},{id:'w1c2',t:'Power hike tanjakan target 5.5 km/jam'},{id:'w1c3',t:'Downhill: langkah pendek, jangan ngerem tumit'}]},
+    {day:'Hari D',type:'long',dur:'2 jam',tasks:[{id:'w1d1',t:'18-20km rolling, 300m EG'},{id:'w1d2',t:'15 menit tempo di akhir (RPE 6-7) — priming pace BRODER'},{id:'w1d3',t:'Gel di menit 45 & 90'}]},
+   ],gear:[{id:'g1a',t:'Cek kondisi sepatu trail — perlu ganti?'},{id:'g1b',t:'Evaluasi lutut kanan pasca minggu tinggi kemarin'}]},
 
-  {w:2,p:1,dr:'6 Apr – 12 Apr',title:'Fondasi',km:38,eg:800,notes:'Power hiking adalah senjata utama sub-28. Target hiking pace: 5.5–6 km/jam di tanjakan. Mulai latih ini dari sekarang — bukan di Fase 2.',
+  {w:2,p:1,dr:'14 – 20 Sep',title:'Climbing Economy',km:56,eg:1100,notes:'Mulai naik bertahap. Fokus climbing economy + reintro teknik downhill secara terkontrol (durasi pendek dulu, jangan overload lutut).',
    days:[
-    {day:'Hari A',type:'easy',dur:'50 menit',tasks:[{id:'w2a1',t:'Lari 10km pace santai'},{id:'w2a2',t:'Fokus cadence — target 170–175 spm'},{id:'w2a3',t:'Pendinginan 5 menit'}]},
-    {day:'Hari B',type:'strength',dur:'50 menit',tasks:[{id:'w2b1',t:'Single-leg squat 3×10'},{id:'w2b2',t:'Step-up 3×15'},{id:'w2b3',t:'Nordic hamstring curl 3×8'},{id:'w2b4',t:'Dead bug 3×12'},{id:'w2b5',t:'Side plank 3×30 detik'},{id:'w2b6',t:'Hollow body hold 3×20 detik'}]},
-    {day:'Hari C',type:'trail',dur:'90 menit',tasks:[{id:'w2c1',t:'Trail run 15–16km dengan 500–600m EG'},{id:'w2c2',t:'POWER HIKE tanjakan >15% — poles aktif, badan condong maju'},{id:'w2c3',t:'Target hiking pace 5.5 km/jam di tanjakan (ukur di GPS)'},{id:'w2c4',t:'Makan & minum tiap 45 menit'}]},
-    {day:'Hari D',type:'easy',dur:'30 menit',tasks:[{id:'w2d1',t:'Lari 6km recovery pace'},{id:'w2d2',t:'Stretch + foam rolling'}]},
-   ],gear:[{id:'g2a',t:'Test trekking poles — panjang yang tepat untuk tanjakan'},{id:'g2b',t:'Cek headlamp — baterai OK?'}]},
+    {day:'Hari A',type:'easy',dur:'55 menit',tasks:[{id:'w2a1',t:'Lari 10km Z2'},{id:'w2a2',t:'4×20 detik strides di akhir'}]},
+    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w2b1',t:'Bulgarian split squat 3×12'},{id:'w2b2',t:'Step-up w/ knee drive 3×12'},{id:'w2b3',t:'Nordic curl assisted 3×8'},{id:'w2b4',t:'Side plank 3×30 detik'},{id:'w2b5',t:'Dead bug 3×12'}]},
+    {day:'Hari C',type:'hill',dur:'85 menit',tasks:[{id:'w2c1',t:'14km, 600m EG — 8-10× repeat tangga/tanjakan'},{id:'w2c2',t:'Uphill: power hike 5.5-6 km/jam'},{id:'w2c3',t:'Downhill drill pendek: forefoot, look 3-5m ke depan, 6-8× repeat 30 detik'}]},
+    {day:'Hari D',type:'long',dur:'2.5 jam',tasks:[{id:'w2d1',t:'24km rolling, 500m EG'},{id:'w2d2',t:'2×15 menit tempo simulasi pace BRODER (RPE 6-7)'},{id:'w2d3',t:'Fueling: gel tiap 45 menit, electrolyte tiap 30 menit'}]},
+   ],gear:[{id:'g2a',t:'Test isi drop bag kecil versi BRODER'},{id:'g2b',t:'Cek kaus kaki anti-blister'}]},
 
-  {w:3,p:1,dr:'13 Apr – 19 Apr',title:'B2B Pertama',km:48,eg:1200,notes:'B2B pertama — latih fisik dan mental sekaligus. Untuk sub-28, km 0–30 race harus dijaga di 12–14 mnt/km. Mulai rasakan pace itu hari ini.',
+  {w:3,p:1,dr:'21 – 27 Sep',title:'B2B & Race-Pace Priming',km:62,eg:1500,notes:'B2B pertama siklus ini. Simulasi kaki lelah ala BRODER — pace nggak penting di Hari D, yang penting tetap gerak.',
    days:[
-    {day:'Hari A',type:'easy',dur:'55 menit',tasks:[{id:'w3a1',t:'Lari 10km santai'},{id:'w3a2',t:'4×100m strides di akhir'},{id:'w3a3',t:'Istirahat 60 detik antar stride'}]},
-    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w3b1',t:'Bulgarian split squat 3×12'},{id:'w3b2',t:'Romanian deadlift (ransel) 3×12'},{id:'w3b3',t:'Wall sit 3×45 detik'},{id:'w3b4',t:'Calf raises slow 3×25'},{id:'w3b5',t:'Hip flexor stretch 2×60 detik'}]},
-    {day:'Hari C',type:'long',dur:'2.5–3 jam',tasks:[{id:'w3c1',t:'Long run 20km trail/campuran'},{id:'w3c2',t:'Target pace rata-rata: 13–15 mnt/km overall'},{id:'w3c3',t:'Power hike semua tanjakan >10% — jangan berlari'},{id:'w3c4',t:'Nutrition: makan tiap 45 menit, electrolyte tiap 30 mnt'},{id:'w3c5',t:'Simpan 20% energi di akhir'}]},
-    {day:'Hari D (B2B)',type:'trail',dur:'90–120 menit',tasks:[{id:'w3d1',t:'Lari 15km kaki lelah dari kemarin'},{id:'w3d2',t:'Ini latihan mental — pace tidak penting'},{id:'w3d3',t:'Hiking uphill, lari flat/downhill'},{id:'w3d4',t:'Nutrition pagi sebelum lari'}]},
-   ],gear:[{id:'g3a',t:'Test real food saat lari (pisang, kurma, nasi)'},{id:'g3b',t:'Vest nyaman 3+ jam?'}]},
+    {day:'Hari A',type:'easy',dur:'40 menit',tasks:[{id:'w3a1',t:'Lari 8km Z1-Z2 recovery'}]},
+    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w3b1',t:'Full circuit minggu 1-2 + tambah'},{id:'w3b2',t:'Copenhagen plank 3×20 detik'},{id:'w3b3',t:'Hip mobility 10 menit'},{id:'w3b4',t:'Ankle stability drill 3×15'}]},
+    {day:'Hari C (Long/B2B-1)',type:'long',dur:'3 jam',tasks:[{id:'w3c1',t:'26-28km terrain rolling, 900m EG'},{id:'w3c2',t:'Practice race-pace BRODER (RPE 6-7 di segmen flat)'},{id:'w3c3',t:'Gel tiap 45 menit, electrolyte tiap 30 menit, coba caffeine gel 1×'}]},
+    {day:'Hari D (B2B-2)',type:'b2b',dur:'2 jam',tasks:[{id:'w3d1',t:'16-18km kaki lelah dari kemarin, 400m EG'},{id:'w3d2',t:'Ini latihan mental — pace nggak penting, fokus forward progress'},{id:'w3d3',t:'Downhill teknik tetap dijaga meski lelah'}]},
+   ],gear:[{id:'g3a',t:'Full gear check race BRODER: vest kecil, gel, electrolyte, watch'},{id:'g3b',t:'Test real food saat lari panjang'}]},
 
-  {w:4,p:1,dr:'20 Apr – 26 Apr',title:'Recovery Week 🛌',km:25,eg:400,notes:'Recovery = adaptasi terjadi. Tanpa minggu ini, Fase 2 akan menghancurkan kamu. Kaki segar = kualitas latihan EG di minggu 5–7 jauh lebih tinggi.',
+  {w:4,p:1,dr:'28 Sep – 4 Okt',title:'Sharpen & Taper ke BRODER',km:42,eg:600,notes:'Volume turun drastis — ini bukan detraining, ini persiapan biar segar pas race. Mulai jaga tidur ekstra dari sekarang.',
    days:[
-    {day:'Hari A',type:'easy',dur:'35 menit',tasks:[{id:'w4a1',t:'Lari 7km sangat santai'},{id:'w4a2',t:'Jika lelah — jalan cepat 45 menit'}]},
-    {day:'Hari B',type:'strength',dur:'40 menit',tasks:[{id:'w4b1',t:'Yoga / stretching full body 20 menit'},{id:'w4b2',t:'Bodyweight squat 2×15'},{id:'w4b3',t:'Hip mobility drills 10 menit'},{id:'w4b4',t:'Foam rolling betis, paha, IT band'}]},
-    {day:'Hari C',type:'trail',dur:'60 menit',tasks:[{id:'w4c1',t:'Trail santai 10–12km, 300m EG'},{id:'w4c2',t:'Nikmati — tidak ada tekanan'},{id:'w4c3',t:'Evaluasi gear'}]},
-   ],gear:[{id:'g4a',t:'Evaluasi kondisi tubuh — nyeri tidak normal?'},{id:'g4b',t:'Rencanakan rute Fase 2'}]},
+    {day:'Hari A',type:'easy',dur:'40 menit',tasks:[{id:'w4a1',t:'Lari 8km easy + 4×100m strides'}]},
+    {day:'Hari B',type:'strength',dur:'25 menit',tasks:[{id:'w4b1',t:'Maintenance ringan saja — jangan sampai DOMS'},{id:'w4b2',t:'Mobility & stretching 15 menit'}]},
+    {day:'Hari C',type:'hill',dur:'70 menit',tasks:[{id:'w4c1',t:'12km, 300m EG rolling'},{id:'w4c2',t:'20 menit di goal pace BRODER — rasakan sustainable atau tidak'}]},
+    {day:'Hari D',type:'easy',dur:'35 menit',tasks:[{id:'w4d1',t:'Shakeout 6-8km easy'},{id:'w4d2',t:'Mobility + foam rolling'}]},
+   ],gear:[{id:'g4a',t:'Packing checklist BRODER lengkap'},{id:'g4b',t:'Cek transport/akomodasi ke lokasi race'},{id:'g4c',t:'Charge watch & headlamp penuh'}]},
 
-  {w:5,p:2,dr:'27 Apr – 3 Mei',title:'Naik Level',km:55,eg:2500,notes:'⚡ EG target naik ke 2500m/minggu — ini wajib untuk COT. Power hiking pace harus sudah konsisten 5.5–6 km/jam. Setiap tanjakan curam = wajib poles aktif.',
+  {w:5,p:2,dr:'5 – 11 Okt',title:'BRODER Race Week 🎯',km:30,eg:640,notes:'Ingat: BRODER = dress rehearsal, bukan target utama. Effort ~85-90% max, bukan all-out — biar recovery ke BTS cepat. Practice fueling & gear persis rencana BTS.',
    days:[
-    {day:'Hari A',type:'easy',dur:'55 menit',tasks:[{id:'w5a1',t:'Lari 12km pace nyaman'},{id:'w5a2',t:'2×10 menit tempo ringan di tengah (~11 mnt/km trail)'}]},
-    {day:'Hari B',type:'strength',dur:'50 menit',tasks:[{id:'w5b1',t:'Jump squat 3×10'},{id:'w5b2',t:'Step-up with knee drive 3×12'},{id:'w5b3',t:'Single-leg deadlift 3×10'},{id:'w5b4',t:'Bear crawl 3×20m'},{id:'w5b5',t:'Plank with reach 3×12'}]},
-    {day:'Hari C',type:'long',dur:'3–3.5 jam',tasks:[{id:'w5c1',t:'Trail 22–24km dengan 1400–1600m EG'},{id:'w5c2',t:'POWER HIKE tanjakan dengan poles — target 5.5 km/jam'},{id:'w5c3',t:'Lari di flat & downhill — target 8–9 km/jam'},{id:'w5c4',t:'Nutrition tiap 40 mnt, electrolyte tiap 30 mnt'},{id:'w5c5',t:'Log waktu per segment: tanjakan vs flat vs turunan'}]},
-    {day:'Hari D (B2B)',type:'trail',dur:'2–2.5 jam',tasks:[{id:'w5d1',t:'Trail 16–18km dengan 900m EG'},{id:'w5d2',t:'Hiking pace tetap 5.5 km/jam meski kaki lelah'},{id:'w5d3',t:'Foam roll + stretching wajib setelahnya'}]},
-   ],gear:[{id:'g5a',t:'Poles sudah di-grip dengan nyaman?'},{id:'g5b',t:'Test rain jacket'},{id:'g5c',t:'Cek baterai cadangan headlamp'}]},
+    {day:'Sen-Rab',type:'easy',dur:'20-25 menit',tasks:[{id:'w5a1',t:'Jog santai 4-5km/hari atau rest'},{id:'w5a2',t:'Mulai perbanyak karbohidrat'}]},
+    {day:'Kamis-Jumat',type:'rest',dur:'Rest',tasks:[{id:'w5b1',t:'Rest total atau jalan santai 20 menit'},{id:'w5b2',t:'Packing final, cek race kit'},{id:'w5b3',t:'Tidur lebih awal'}]},
+    {day:'Sabtu 10 Okt 🏁',type:'race',dur:'RACE BRODER 25K',tasks:[{id:'w5c1',t:'Start konservatif — jangan kebawa nafsu'},{id:'w5c2',t:'Practice fueling: gel tiap 40-45 menit, electrolyte tiap 30 menit'},{id:'w5c3',t:'Practice gear final: vest, watch pacing, drop bag kalau ada'},{id:'w5c4',t:'Effort target ~85-90% — simpan sisa buat evaluasi, bukan all-out'}]},
+    {day:'Minggu 11 Okt',type:'easy',dur:'20-30 menit',tasks:[{id:'w5d1',t:'Jog/jalan santai, evaluasi kondisi kaki & lutut'},{id:'w5d2',t:'Foam rolling menyeluruh'}]},
+   ],gear:[{id:'g5a',t:'Race kit BRODER 100% siap H-1'},{id:'g5b',t:'Catat evaluasi: pacing, fueling, gear apa yang perlu diubah buat BTS'}]},
 
-  {w:6,p:2,dr:'4 Mei – 10 Mei',title:'Volume Tinggi',km:62,eg:3000,notes:'Tidur 8 jam = latihan wajib. Di minggu ini mulai hitung pace rata-rata trail kamu. Target: overall pace 14–15 mnt/km di sesi long run ber-EG tinggi.',
+  {w:6,p:2,dr:'12 – 18 Okt',title:'Recovery Penuh',km:35,eg:500,notes:'Reset dulu sebelum masuk block terberat. Jangan buru-buru nambah volume walau ngerasa lutut baik-baik saja.',
    days:[
-    {day:'Hari A',type:'easy',dur:'60 menit',tasks:[{id:'w6a1',t:'Lari 12km santai'},{id:'w6a2',t:'Running drills: high knees, butt kicks, A-skip'},{id:'w6a3',t:'4×20 detik hill sprint pendek'}]},
-    {day:'Hari B',type:'strength',dur:'55 menit',tasks:[{id:'w6b1',t:'Squat 4×20'},{id:'w6b2',t:'Reverse lunge 4×15'},{id:'w6b3',t:'Single-leg calf raise 4×25'},{id:'w6b4',t:'Dead bug 3×15'},{id:'w6b5',t:'Bird dog 3×15'},{id:'w6b6',t:'Glute bridge march 3×20'}]},
-    {day:'Hari C',type:'long',dur:'3.5–4 jam',tasks:[{id:'w6c1',t:'Trail 28–30km dengan 1800–2000m EG'},{id:'w6c2',t:'Segment 1 (km 0–10): pace ~12–13 mnt/km, jangan keburu'},{id:'w6c3',t:'Segment 2 (km 10–20): power hike semua tanjakan 200m+'},{id:'w6c4',t:'Segment 3 (km 20–30): jaga gerak meski lelah'},{id:'w6c5',t:'Night segment: 30 menit terakhir pakai headlamp'}]},
-    {day:'Hari D',type:'easy',dur:'40 menit',tasks:[{id:'w6d1',t:'Lari 8–10km sangat santai'},{id:'w6d2',t:'Evaluasi tanda overtraining'}]},
-   ],gear:[{id:'g6a',t:'Test headlamp malam minimal 30 menit'},{id:'g6b',t:'Cek kaus kaki — ada blister?'}]},
+    {day:'Hari A',type:'easy',dur:'35-40 menit',tasks:[{id:'w6a1',t:'Jog 6-8km sangat santai, evaluasi soreness'}]},
+    {day:'Hari B',type:'strength',dur:'40 menit',tasks:[{id:'w6b1',t:'Mobility & foam rolling fokus'},{id:'w6b2',t:'Eccentric ringan: step-down 2×10'},{id:'w6b3',t:'Hip flexor & piriformis stretch'}]},
+    {day:'Hari C',type:'easy',dur:'75 menit',tasks:[{id:'w6c1',t:'Trail santai 12km, rolling ringan, tanpa tekanan'}]},
+    {day:'Hari D',type:'hill',dur:'50 menit',tasks:[{id:'w6d1',t:'8-10km easy + reintro hill repeat ringan'},{id:'w6d2',t:'Downhill teknik gentle — perhatikan sinyal lutut'}]},
+   ],gear:[{id:'g6a',t:'Order gear kurang buat BTS: gel, electrolyte, spare socks'},{id:'g6b',t:'Cek drop bag strategy BTS (lokasi mana aja ada drop bag)'}]},
 
-  {w:7,p:2,dr:'11 Mei – 17 Mei',title:'B2B Besar Pertama',km:70,eg:3800,notes:'⚠️ Minggu terberat Fase 2. Target EG minggu ini 3800m — setara 51% dari total EG race. Kalau bisa selesaikan ini, COT 33 jam sudah aman.',
+  {w:7,p:3,dr:'19 – 25 Okt',title:'⚡ BTS PEAK BLOCK',km:78,eg:3800,notes:'🏔️ Minggu terberat seluruh siklus. Manfaatkan maksimal buat rehearsal fueling, gear, dan mental (lesson dari Mantra: mental fatigue > fisik). Kalau lutut kanan protes signifikan pas turunan, kurangi volume turunan — jangan dipaksa.',
    days:[
-    {day:'Hari A',type:'easy',dur:'45 menit',tasks:[{id:'w7a1',t:'Lari 10km ringan — simpan energi'},{id:'w7a2',t:'Tidur cukup malam ini'}]},
-    {day:'Hari B',type:'strength',dur:'40 menit',tasks:[{id:'w7b1',t:'Maintenance strength — bukan push!'},{id:'w7b2',t:'Squat 2×15, Lunge 2×12, Core 2×15'},{id:'w7b3',t:'Foam rolling dan stretching'}]},
-    {day:'Hari C ⚡',type:'long',dur:'4–5 jam',tasks:[{id:'w7c1',t:'30–32km trail dengan 2200–2500m EG'},{id:'w7c2',t:'SEMUA gear race: vest, poles, headlamp'},{id:'w7c3',t:'Power hike setiap tanjakan — ukur pace di GPS'},{id:'w7c4',t:'Target overall pace: 14–15 mnt/km (≈ pace COT-safe)'},{id:'w7c5',t:'Include 1 jam setelah gelap — latihan headlamp navigation'}]},
-    {day:'Hari D (B2B)',type:'trail',dur:'3–3.5 jam',tasks:[{id:'w7d1',t:'25km dengan kaki sisa kemarin — 1300m EG'},{id:'w7d2',t:'Ini simulasi km 60–85 race secara fisiologis'},{id:'w7d3',t:'Hiking pace harus tetap 5+ km/jam meski lelah'},{id:'w7d4',t:'Post-run: makan besar + istirahat total'}]},
-   ],gear:[{id:'g7a',t:'Full gear test: vest, poles, headlamp, p3k, rain jacket'},{id:'g7b',t:'Test nutrition real food 4 jam+'}]},
+    {day:'Hari A',type:'easy',dur:'65 menit',tasks:[{id:'w7a1',t:'Lari 12km Z2 + hill strides ringan'}]},
+    {day:'Hari B',type:'strength',dur:'35 menit',tasks:[{id:'w7b1',t:'Maintenance saja — jangan tambah beban baru'},{id:'w7b2',t:'Squat 2×15, plank 2×45 detik, calf raise 2×20'}]},
+    {day:'Hari C ⚡ (Long/B2B-1)',type:'long',dur:'5-6 jam',tasks:[{id:'w7c1',t:'32-35km terrain hilly (cari EG maksimal — pertimbangkan drive ke bukit terdekat), 2200-2500m EG'},{id:'w7c2',t:'Full race gear + fueling exact seperti rencana BTS'},{id:'w7c3',t:'Night segment 1-1.5 jam pakai headlamp — practice solo/mental (ingat UB Forest lesson)'},{id:'w7c4',t:'Power hike semua tanjakan >10%, catat pace di GPS'}]},
+    {day:'Hari D (B2B-2)',type:'b2b',dur:'3-3.5 jam',tasks:[{id:'w7d1',t:'20-22km kaki lelah dari kemarin, 1000m EG'},{id:'w7d2',t:'Fokus downhill technique — ini yang paling berat buat lutut pas capek'},{id:'w7d3',t:'Hiking pace tetap dijaga meski kaki berat'}]},
+   ],gear:[{id:'g7a',t:'Full BTS race gear test: vest, poles kalau pakai, headlamp+spare'},{id:'g7b',t:'Drop bag isi final utk simulasi'},{id:'g7c',t:'Spare shoes & spare socks — test ganti di tengah run'},{id:'g7d',t:'Windbreaker test malam hari'}]},
 
-  {w:8,p:2,dr:'18 Mei – 24 Mei',title:'Recovery Week 🛌',km:30,eg:600,notes:'Recovery setelah B2B besar. Jangan tambah volume! Minggu depan race simulation — kamu butuh badan yang segar 100%.',
+  {w:8,p:4,dr:'26 Okt – 1 Nov',title:'Taper Dimulai',km:45,eg:1300,notes:'Volume turun ~40% dari peak, tapi elevasi tetap ada biar legs stay sharp. Mulai finalisasi race plan BTS: checkpoint time, drop bag logistics, race-morning routine.',
    days:[
-    {day:'Hari A',type:'easy',dur:'35 menit',tasks:[{id:'w8a1',t:'Lari 7km atau jalan 45 menit'},{id:'w8a2',t:'Perhatikan sinyal tubuh'}]},
-    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w8b1',t:'Yoga / stretching 30 menit'},{id:'w8b2',t:'Foam rolling: betis, hamstring, quad, IT band'},{id:'w8b3',t:'Hip flexor & piriformis stretch'}]},
-    {day:'Hari C',type:'trail',dur:'75 menit',tasks:[{id:'w8c1',t:'Trail ringan 12–14km, 400m EG'},{id:'w8c2',t:'Evaluasi gear'},{id:'w8c3',t:'Visualisasi race day'}]},
-   ],gear:[{id:'g8a',t:'Order gear kurang: kaus kaki, gel, electrolyte'},{id:'g8b',t:'Pastikan poles kondisi baik'}]},
+    {day:'Hari A',type:'easy',dur:'50 menit',tasks:[{id:'w8a1',t:'Lari 10km Z2'}]},
+    {day:'Hari B',type:'strength',dur:'30 menit',tasks:[{id:'w8b1',t:'Maintenance ringan, mobility'}]},
+    {day:'Hari C',type:'hill',dur:'2 jam',tasks:[{id:'w8c1',t:'18-20km rolling/hilly, 900m EG'},{id:'w8c2',t:'Effort moderate — practice race-morning routine (jam makan, timing gel pertama)'}]},
+    {day:'Hari D',type:'easy',dur:'40 menit',tasks:[{id:'w8d1',t:'Easy 8km + mobility'}]},
+   ],gear:[{id:'g8a',t:'Race plan BTS detail: target checkpoint per 20-25km'},{id:'g8b',t:'Konfirmasi drop bag lokasi & isi tiap titik'}]},
 
-  {w:9,p:2,dr:'25 Mei – 31 Mei',title:'Race Simulation',km:60,eg:3200,notes:'🎯 Race simulation dengan checkpoint target. Sub-28: km30 harus dicapai dalam 6–7 jam. COT-safe: km30 maksimal 9 jam. Cari weakness kamu SEKARANG.',
+  {w:9,p:4,dr:'2 – 8 Nov',title:'BTS RACE WEEK 🏁',km:12,eg:200,notes:'Ini tujuan utamanya. Semua sudah pernah dicoba di minggu 7 — race day tinggal eksekusi. Tidur 8+ jam = latihan wajib minggu ini.',
    days:[
-    {day:'Hari A',type:'easy',dur:'65 menit',tasks:[{id:'w9a1',t:'Lari 13km: 8km santai + 3km tempo + 2km CD'},{id:'w9a2',t:'Tempo = "comfortably hard" ~10–11 mnt/km trail'}]},
-    {day:'Hari B',type:'strength',dur:'50 menit',tasks:[{id:'w9b1',t:'Single-leg squat 3×12'},{id:'w9b2',t:'Step-down eccentric 3×15'},{id:'w9b3',t:'Hip thrust 3×15'},{id:'w9b4',t:'Copenhagen plank 3×20 detik'},{id:'w9b5',t:'Ankle stability drill 3×15'}]},
-    {day:'Hari C 🎯',type:'long',dur:'8–10 jam',tasks:[{id:'w9c1',t:'Mulai jam 00:00 TENGAH MALAM (simulasi flag off race)'},{id:'w9c2',t:'30–35km dengan 2200m+ EG'},{id:'w9c3',t:'FULL race gear — tidak ada yang ditinggal'},{id:'w9c4',t:'Checkpoint virtual: km10 ≤2.5 jam, km20 ≤5 jam, km30 ≤7.5 jam'},{id:'w9c5',t:'Power hike semua tanjakan — catat pace di setiap segmen'},{id:'w9c6',t:'Akhiri pakai headlamp minimal 1 jam'}]},
-    {day:'Hari D',type:'easy',dur:'30 menit',tasks:[{id:'w9d1',t:'Jalan 30 menit atau jog 5–6km'},{id:'w9d2',t:'Evaluasi: pace tanjakan vs target 5.5 km/jam'}]},
-   ],gear:[{id:'g9a',t:'Mandatory gear: sudah lengkap?'},{id:'g9b',t:'Test semua makanan di perut saat jalan lama'},{id:'g9c',t:'Powerbank & kabel charger ready'}]},
-
-  {w:10,p:3,dr:'1 Jun – 7 Jun',title:'⚡ PEAK WEEK',km:80,eg:4800,notes:'🏔️ PUNCAK PROGRAM. EG target 4800m = 65% EG race dalam satu minggu. Sub-28: kalau pace kamu di sesi ini konsisten 13–15 mnt/km overall, kamu on track.',
-   days:[
-    {day:'Hari A',type:'easy',dur:'70 menit',tasks:[{id:'w10a1',t:'Lari 12km + 6×2 menit hill repeat dengan poles'},{id:'w10a2',t:'Target hill repeat: hiking 6 km/jam naik, lari 10 km/jam turun'},{id:'w10a3',t:'Simpan energi untuk B2B akhir minggu'}]},
-    {day:'Hari B',type:'strength',dur:'40 menit',tasks:[{id:'w10b1',t:'Squat 3×15, Lunge 3×12, Glute bridge 3×20'},{id:'w10b2',t:'Core: plank, dead bug, bird dog'},{id:'w10b3',t:'Maintenance saja — tidak ada baru'}]},
-    {day:'Hari C 🔥',type:'long',dur:'5–6 jam',tasks:[{id:'w10c1',t:'35–38km trail dengan 3000–3200m EG'},{id:'w10c2',t:'Sub-28 pace check: km20 ≤4.5 jam, km35 ≤8 jam'},{id:'w10c3',t:'COT-safe pace: km20 ≤5.5 jam, km35 ≤9.5 jam'},{id:'w10c4',t:'Full gear, full nutrition — persis rencana race'},{id:'w10c5',t:'Night run wajib: minimal 1.5 jam dalam gelap'}]},
-    {day:'Hari D (B2B)',type:'trail',dur:'3–4 jam',tasks:[{id:'w10d1',t:'22–25km, 1600m EG dengan kaki sisa kemarin'},{id:'w10d2',t:'Ini simulasi km 70–95 race — ini yang menentukan'},{id:'w10d3',t:'Hiking pace minimal 4.5 km/jam meski kaki mati'},{id:'w10d4',t:'Post-run: makan besar, tidur awal, recovery total'}]},
-   ],gear:[{id:'g10a',t:'Mandatory gear sudah dicoba dan nyaman'},{id:'g10b',t:'Nutrition plan final — tidak ada cobaan baru di race'},{id:'g10c',t:'Emergency contact list dibuat'}]},
-
-  {w:11,p:3,dr:'8 Jun – 14 Jun',title:'Post-Peak Recovery',km:45,eg:1500,notes:'Teknik descent buruk = lutut hancur di km 70+, pace drop signifikan, COT terancam. Minggu ini fokus descent efficiency — setiap 1 menit lebih cepat per km turun = hemat 30+ menit di race.',
-   days:[
-    {day:'Hari A',type:'easy',dur:'40 menit',tasks:[{id:'w11a1',t:'Lari 8–10km sangat santai'},{id:'w11a2',t:'Tidak ada target'}]},
-    {day:'Hari B',type:'strength',dur:'45 menit',tasks:[{id:'w11b1',t:'Yoga recovery 20 menit'},{id:'w11b2',t:'Foam rolling intensif'},{id:'w11b3',t:'Stretch hip, hamstring, betis, quad'}]},
-    {day:'Hari C',type:'trail',dur:'2 jam',tasks:[{id:'w11c1',t:'Trail 16–18km fokus TEKNIK TURUN'},{id:'w11c2',t:'Short fast steps — jangan rem dengan tumit'},{id:'w11c3',t:'Look 3–5 meter ke depan saat descent'},{id:'w11c4',t:'Poles untuk balance turunan curam'}]},
-    {day:'Hari D',type:'easy',dur:'35 menit',tasks:[{id:'w11d1',t:'Lari 7–8km sangat santai'},{id:'w11d2',t:'Visualisasi: bayangkan finish line'}]},
-   ],gear:[{id:'g11a',t:'Final gear check'},{id:'g11b',t:'Buat list packing race day'}]},
-
-  {w:12,p:4,dr:'15 Jun – 21 Jun',title:'Taper Dimulai',km:38,eg:1000,notes:'Taper = volume turun, intensitas dipertahankan. Gunakan waktu luang ini untuk FINALISASI race plan: checkpoint times, nutrition per segment, dan strategi malam.',
-   days:[
-    {day:'Hari A',type:'easy',dur:'45 menit',tasks:[{id:'w12a1',t:'Lari 10km santai'},{id:'w12a2',t:'2×5 menit di race pace trail (~13 mnt/km)'}]},
-    {day:'Hari B',type:'strength',dur:'35 menit',tasks:[{id:'w12b1',t:'Squat 2×15, Lunge 2×12 — ringan'},{id:'w12b2',t:'Core 15 menit'},{id:'w12b3',t:'Stretch 15 menit'}]},
-    {day:'Hari C',type:'trail',dur:'2 jam',tasks:[{id:'w12c1',t:'Trail 15–16km dengan 700m EG'},{id:'w12c2',t:'Test race pace — apakah 13 mnt/km terasa sustainable?'},{id:'w12c3',t:'Tulis checkpoint plan: sub-28 vs COT-safe timing'}]},
-   ],gear:[{id:'g12a',t:'Buat race plan detail: target jam tiap checkpoint'},{id:'g12b',t:'Pesan makanan carbo load pre-race'}]},
-
-  {w:13,p:4,dr:'22 Jun – 28 Jun',title:'Sharpening',km:25,eg:600,notes:'Tidur 8–9 jam = latihan utama. Hafal checkpoint times-mu. Visualisasi: km 80 malam hari, kaki berat, tapi kamu masih bergerak. Itu momen yang menentukan Drawapala atau tidak.',
-   days:[
-    {day:'Hari A',type:'easy',dur:'40 menit',tasks:[{id:'w13a1',t:'Lari 8km santai'},{id:'w13a2',t:'6×20 detik strides di akhir'}]},
-    {day:'Hari B',type:'strength',dur:'25 menit',tasks:[{id:'w13b1',t:'Glute activation: clamshells, band walks'},{id:'w13b2',t:'Hip flexor stretch'},{id:'w13b3',t:'Light squat 2×10'}]},
-    {day:'Hari C',type:'trail',dur:'75 menit',tasks:[{id:'w13c1',t:'Trail 10–12km ringan'},{id:'w13c2',t:'Pakai semua race gear — final comfort check'},{id:'w13c3',t:'Cek drop bag strategy'}]},
-   ],gear:[{id:'g13a',t:'Packing race bag 80% selesai'},{id:'g13b',t:'Konfirmasi akomodasi & transportasi'},{id:'g13c',t:'Carbo loading mulai 3 hari sebelum race'}]},
-
-  {w:14,p:4,dr:'29 Jun – 3 Jul 🏁',title:'RACE WEEK',km:10,eg:200,notes:'Flag off 3 Juli jam 00:00 TENGAH MALAM. COT 33 jam = finish sebelum 09:00. Sub-28 (Drawapala) = finish sebelum 04:00. Tidur siang 2 Jul, berangkat malam.',
-   days:[
-    {day:'29 Jun',type:'easy',dur:'20 menit',tasks:[{id:'w14a1',t:'Jalan/jog 20 menit sangat santai'},{id:'w14a2',t:'4×30 detik strides'},{id:'w14a3',t:'Banyak karbohidrat hari ini'}]},
-    {day:'30 Jun',type:'rest',dur:'Full rest',tasks:[{id:'w14b1',t:'Istirahat total atau jalan 15 menit'},{id:'w14b2',t:'Finalisasi packing race bag'},{id:'w14b3',t:'Makan carbo besar: nasi, pasta, kentang'},{id:'w14b4',t:'Tidur lebih awal — besok perlu tidur siang'}]},
-    {day:'1 Jul',type:'rest',dur:'Travel/Check-in',tasks:[{id:'w14c1',t:'Berangkat ke lokasi race'},{id:'w14c2',t:'Race briefing / check-in'},{id:'w14c3',t:'Cek ulang mandatory gear'},{id:'w14c4',t:'Makan siang & makan malam besar — carbo max'},{id:'w14c5',t:'Tidur jam 9–10 malam'}]},
-    {day:'2 Jul',type:'rest',dur:'Pre-Race — Start Malam',tasks:[
-      {id:'w14d1',t:'Bangun normal, sarapan & makan siang besar'},
-      {id:'w14d2',t:'TIDUR SIANG jam 13:00–17:00 — ini wajib!'},
-      {id:'w14d3',t:'Makan malam besar jam 18:00–19:00'},
-      {id:'w14d4',t:'Brief check semua gear, isi powerbank & headlamp'},
-      {id:'w14d5',t:'Tiba di start area jam 22:30–23:00'},
-      {id:'w14d6',t:'Sarapan ringan jam 22:00 (pisang, roti, gel)'},
-      {id:'w14d7',t:'⚡ FLAG OFF jam 00:00 — selamat berlari!'},
+    {day:'Sen-Rab',type:'easy',dur:'20-30 menit',tasks:[{id:'w9a1',t:'Jog santai/hari atau rest'},{id:'w9a2',t:'Hidrasi & karbo loading mulai H-3'}]},
+    {day:'Kamis',type:'rest',dur:'Full rest',tasks:[{id:'w9b1',t:'Rest total / jalan santai 15 menit'},{id:'w9b2',t:'Packing final'}]},
+    {day:'Jumat 6 Nov',type:'rest',dur:'Travel/Check-in',tasks:[{id:'w9c1',t:'Berangkat ke lokasi race'},{id:'w9c2',t:'Race briefing / check-in, cek ulang mandatory gear'},{id:'w9c3',t:'Makan besar carbo, tidur awal'}]},
+    {day:'Sabtu 7 Nov 🏁',type:'race',dur:'RACE BTS 100K',tasks:[
+      {id:'w9d1',t:'Start konservatif — simpan energi 20-30km pertama'},
+      {id:'w9d2',t:'Power hike semua tanjakan — jangan lari paksa'},
+      {id:'w9d3',t:'Fueling tiap 40 menit, electrolyte tiap 30 menit — tanpa gagal'},
+      {id:'w9d4',t:'Caffeine strategis di jam-jam sulit (biasanya dini hari)'},
+      {id:'w9d5',t:'Mental checkpoint: forward progress > pace, terutama di malam hari'},
+      {id:'w9d6',t:'Downhill terkontrol — jaga lutut kanan, jangan ngerem tumit'},
     ]},
-    {day:'3 Jul 🏁',type:'race',dur:'Target: sub-28 / COT 33 jam',tasks:[
-      {id:'w14e1',t:'🚩 START 00:00 — mulai PELAN, simpan energi'},
-      {id:'w14e2',t:'⏱ Km 30: target 06:00–07:00 (sub-28) / max 09:00 (COT)'},
-      {id:'w14e3',t:'⏱ Km 60: target 12:00–14:00 (sub-28) / max 17:00 (COT)'},
-      {id:'w14e4',t:'⏱ Km 90: target 19:00–21:00 (sub-28) / max 01:00+1 (COT)'},
-      {id:'w14e5',t:'🏁 Finish sub-28: sebelum 04:00 (Drawapala Warrior!)'},
-      {id:'w14e6',t:'🏁 Finish COT: sebelum 09:00 (4 Jul)'},
-      {id:'w14e7',t:'Power hike semua tanjakan — poles aktif selalu'},
-      {id:'w14e8',t:'Makan & minum setiap 40 menit TANPA GAGAL'},
-      {id:'w14e9',t:'Jam 02:00–05:00 = titik paling gelap mental. Hitung langkah.'},
-      {id:'w14e10',t:'🎉 FINISH — Drawapala atau COT, dua-duanya luar biasa!'},
-    ]},
-   ],gear:[{id:'g14a',t:'Mandatory gear: 100% ready'},{id:'g14b',t:'Nutrition vest/drop bag: packed'},{id:'g14c',t:'Emergency contact sudah dikabari'},{id:'g14d',t:'Headlamp + backup: full charge — pakai dari km 0!'}]},
+    {day:'Minggu 8 Nov',type:'rest',dur:'Recovery',tasks:[{id:'w9e1',t:'Full rest, jalan santai kalau sanggup'},{id:'w9e2',t:'Rayakan — 100K selesai! 🎉'}]},
+   ],gear:[{id:'g9a',t:'Mandatory gear 100% ready'},{id:'g9b',t:'Drop bag terpacking sesuai lokasi'},{id:'g9c',t:'Emergency contact sudah dikabari'},{id:'g9d',t:'Headlamp + spare battery full charge'}]},
 ];
 
 const GEAR_MASTER=[
-  {cat:'⚠️ Mandatory Race Gear',items:[{id:'gm1',t:'Headlamp utama + spare baterai'},{id:'gm2',t:'Emergency blanket (mylar)'},{id:'gm3',t:'Rain jacket waterproof'},{id:'gm4',t:'Peluit'},{id:'gm5',t:'Kotak P3K'},{id:'gm6',t:'Powerbank + kabel'},{id:'gm7',t:'HP / GPS — terisi penuh'},{id:'gm8',t:'Identitas & medical info card'}]},
-  {cat:'👟 Running Gear',items:[{id:'gm9',t:'Trail shoes — sudah break-in'},{id:'gm10',t:'Kaus kaki anti-blister'},{id:'gm11',t:'Running vest 8–12L'},{id:'gm12',t:'Trekking poles'},{id:'gm13',t:'Topi / buff'},{id:'gm14',t:'Sunglasses'},{id:'gm15',t:'Gaiters'}]},
-  {cat:'🍌 Nutrition & Hydration',items:[{id:'gm16',t:'Gel: min 1/jam (target 20–28 gel)'},{id:'gm17',t:'Real food: kurma, pisang, nasi, bars'},{id:'gm18',t:'Electrolyte tablet/sachet'},{id:'gm19',t:'Air 1.5L dalam vest'},{id:'gm20',t:'Anti-nausea'}]},
-  {cat:'👕 Pakaian',items:[{id:'gm21',t:'Baselayer moisture-wicking'},{id:'gm22',t:'Celana trail / compression'},{id:'gm23',t:'Midlayer untuk malam'},{id:'gm24',t:'Sarung tangan ringan'},{id:'gm25',t:'Spare kaus kaki'}]},
-  {cat:'💊 Perawatan',items:[{id:'gm26',t:'Body Glide / Vaseline'},{id:'gm27',t:'Kinesio tape'},{id:'gm28',t:'Leukotape / Compeed'},{id:'gm29',t:'Ibuprofen / pain reliever'}]},
+  {cat:'⚠️ Mandatory Race Gear',items:[{id:'gm1',t:'Headlamp utama + spare baterai'},{id:'gm2',t:'Emergency blanket (mylar)'},{id:'gm3',t:'Rain jacket / windbreaker'},{id:'gm4',t:'Peluit'},{id:'gm5',t:'Kotak P3K'},{id:'gm6',t:'Powerbank + kabel'},{id:'gm7',t:'HP / GPS watch — terisi penuh'},{id:'gm8',t:'Identitas & medical info card'}]},
+  {cat:'👟 Running Gear',items:[{id:'gm9',t:'Trail shoes utama — sudah break-in'},{id:'gm10',t:'Spare shoes (di drop bag)'},{id:'gm11',t:'Kaus kaki anti-blister + spare'},{id:'gm12',t:'Running vest'},{id:'gm13',t:'Topi / buff'},{id:'gm14',t:'Sunglasses'},{id:'gm15',t:'Sunscreen'}]},
+  {cat:'🍌 Nutrition & Hydration',items:[{id:'gm16',t:'Gel — hitung sesuai target waktu, tiap 40-45 menit'},{id:'gm17',t:'Real food: kurma, pisang, nasi, bars'},{id:'gm18',t:'Electrolyte / salt capsule'},{id:'gm19',t:'Caffeine gel/kopi untuk segmen malam'},{id:'gm20',t:'Hidrasi cukup di vest'}]},
+  {cat:'👕 Pakaian & Drop Bag',items:[{id:'gm21',t:'Baselayer moisture-wicking'},{id:'gm22',t:'Midlayer untuk malam'},{id:'gm23',t:'Sarung tangan ringan'},{id:'gm24',t:'Drop bag terisi & terlabel per titik CP'}]},
+  {cat:'💊 Perawatan',items:[{id:'gm25',t:'Vaseline / anti-chafing'},{id:'gm26',t:'Kinesio tape'},{id:'gm27',t:'Leukotape / Compeed utk blister'},{id:'gm28',t:'Pain reliever (sesuai kebutuhan medis pribadi)'}]},
 ];
 
 // ════════════════════════════════════
 // STATE
 // ════════════════════════════════════
-const LS_KEY='ultra116_v2', LS_GAS='ultra116_gas_url';
+const LS_KEY='bts100_v1', LS_GAS='bts100_gas_url';
 let checks={}, gasUrl='', syncQueue={}, syncTimer=null, activeWeek=1;
 
 function loadLocal(){try{checks=JSON.parse(localStorage.getItem(LS_KEY)||'{}');}catch{checks={};} gasUrl=localStorage.getItem(LS_GAS)||'';}
 function saveLocal(){localStorage.setItem(LS_KEY,JSON.stringify(checks));}
 
-// ── Sync UI ──
 function setSyncUI(state,label){
   const dot=document.getElementById('sdot'), lbl=document.getElementById('slabel'), bar=document.getElementById('sync-bar');
   dot.className='sdot '+state;
@@ -453,7 +403,6 @@ function setSyncUI(state,label){
   if(state==='ok')setTimeout(()=>{bar.className='';},2500);
 }
 
-// ── GAS SETUP ──
 function saveGasUrl(){
   const val=document.getElementById('gas-input').value.trim();
   const err=document.getElementById('gas-err');
@@ -466,7 +415,6 @@ function saveGasUrl(){
 }
 function manualSync(){if(gasUrl)pullFromGas();else document.getElementById('setup-banner').classList.toggle('show');}
 
-// ── PULL ──
 async function pullFromGas(){
   if(!gasUrl)return;
   setSyncUI('syncing','Mengambil data...');
@@ -482,7 +430,6 @@ async function pullFromGas(){
   }catch{setSyncUI('err','Gagal terhubung');}
 }
 
-// ── PUSH (queue + debounce) ──
 function queuePush(id,val){
   if(!gasUrl)return;
   syncQueue[id]=val; clearTimeout(syncTimer);
@@ -499,9 +446,6 @@ function queuePush(id,val){
 }
 function ftime(d){return d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});}
 
-// ════════════════════════════════════
-// COUNTDOWN (1 detik)
-// ════════════════════════════════════
 function tick(){
   const diff=RACE_DATE-new Date();
   if(diff<=0){['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0');return;}
@@ -516,18 +460,11 @@ function tick(){
 }
 function pad(n){return String(n).padStart(2,'0');}
 
-// ════════════════════════════════════
-// HELPERS
-// ════════════════════════════════════
 function phaseColor(pid){return PHASES.find(p=>p.id===pid)?.color||'#fff';}
-function phaseOfWeek(wn){return PHASES.find(p=>p.weeks.includes(wn))?.id||1;}
-function curWeek(){const now=new Date(),s=new Date('2025-03-30');if(now<s)return 1;return Math.min(Math.max(Math.floor((now-s)/604800000)+1,1),14);}
+function curWeek(){const now=new Date(),s=new Date('2026-09-07');if(now<s)return 1;return Math.min(Math.max(Math.floor((now-s)/604800000)+1,1),9);}
 function wkProg(w){const ids=[...w.days.flatMap(d=>d.tasks.map(t=>t.id)),...w.gear.map(g=>g.id)];const done=ids.filter(id=>checks[id]).length;return{done,total:ids.length,pct:ids.length?Math.round(done/ids.length*100):0};}
 function overallPct(){let tot=0,done=0;WEEKS.forEach(w=>{const p=wkProg(w);tot+=p.total;done+=p.done;});GEAR_MASTER.forEach(s=>s.items.forEach(i=>{tot++;if(checks[i.id])done++;}));return tot?Math.round(done/tot*100):0;}
 
-// ════════════════════════════════════
-// TOGGLE
-// ════════════════════════════════════
 function toggle(id,accent){
   checks[id]=!checks[id]; saveLocal(); queuePush(id,checks[id]);
   document.querySelectorAll(`.check-item[data-id="${id}"]`).forEach(el=>{
@@ -547,7 +484,6 @@ function refreshAllUI(){
 
   WEEKS.forEach(w=>{
     const {pct:wp}=wkProg(w); const col=phaseColor(w.p);
-    // overview cell
     const cell=document.getElementById(`wk-${w.w}`);
     if(cell){
       const el=cell.querySelector('.wk-num');
@@ -555,7 +491,6 @@ function refreshAllUI(){
       else if(wp>0){el.textContent=wp+'%';el.style.color=col;el.style.fontSize='10px';}
       else{el.textContent=w.w;el.style.color='rgba(232,237,242,0.4)';el.style.fontSize='14px';}
     }
-    // pill
     const pill=document.getElementById(`pl-${w.w}`);
     if(pill){
       if(w.w===activeWeek){pill.style.background=col;pill.style.color='#000';}
@@ -563,10 +498,8 @@ function refreshAllUI(){
       else{pill.style.background='var(--surface2)';pill.style.color='var(--muted)';}
       pill.textContent=wp===100?'✓':w.w;
     }
-    // week header
     const whf=document.getElementById(`whf-${w.w}`), whp=document.getElementById(`whp-${w.w}`);
     if(whf)whf.style.width=wp+'%'; if(whp){whp.textContent=wp+'% selesai';whp.style.color=col;}
-    // day pcts
     w.days.forEach((d,di)=>{
       const ids=d.tasks.map(t=>t.id); const dd=ids.filter(id=>checks[id]).length; const dp=ids.length?Math.round(dd/ids.length*100):0;
       const dtype=DT[d.type]||DT.easy;
@@ -575,7 +508,6 @@ function refreshAllUI(){
       if(se)se.textContent=`${dd}/${ids.length}`; if(fe)fe.style.width=dp+'%';
     });
   });
-  // gear
   GEAR_MASTER.forEach((sec,si)=>{
     const done=sec.items.filter(i=>checks[i.id]).length; const pct=Math.round(done/sec.items.length*100);
     const f=document.getElementById(`gf-${si}`), c=document.getElementById(`gc-${si}`);
@@ -583,17 +515,11 @@ function refreshAllUI(){
   });
 }
 
-// ════════════════════════════════════
-// TABS
-// ════════════════════════════════════
 function switchTab(n){
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['overview','training','gear'][i]===n));
   document.querySelectorAll('.tab-content').forEach(el=>el.classList.toggle('active',el.id==='tab-'+n));
 }
 
-// ════════════════════════════════════
-// CHECK ITEM
-// ════════════════════════════════════
 function mkCheck(id,text,accent){
   const ok=!!checks[id];
   const btn=document.createElement('button');
@@ -603,14 +529,9 @@ function mkCheck(id,text,accent){
   return btn;
 }
 
-// ════════════════════════════════════
-// OVERVIEW
-// ════════════════════════════════════
 function renderOverview(){
-  // phases
   const pg=document.getElementById('phase-grid');
   PHASES.forEach(p=>{const c=document.createElement('div');c.className='phase-card';c.innerHTML=`<div class="phase-dot" style="background:${p.color}"></div><div class="phase-name" style="color:${p.color}">F${p.id} — ${p.name}</div><div class="phase-desc">${p.desc}</div>`;pg.appendChild(c);});
-  // week grid
   const grid=document.getElementById('wk-grid'); const cw=curWeek();
   WEEKS.forEach(w=>{
     const {pct}=wkProg(w); const col=phaseColor(w.p); const isc=w.w===cw;
@@ -621,17 +542,13 @@ function renderOverview(){
     cell.addEventListener('click',()=>{activeWeek=w.w;switchTab('training');renderWeek();});
     grid.appendChild(cell);
   });
-  // stats
   [{val:WEEKS.reduce((a,w)=>a+w.km,0)+' km',label:'Total KM',color:'#39d98a'},
    {val:(WEEKS.reduce((a,w)=>a+w.eg,0)/1000).toFixed(1)+'k m',label:'Total EG',color:'#ff7040'},
    {val:WEEKS.reduce((a,w)=>a+w.days.length,0)+' sesi',label:'Total Sesi',color:'#5bb4ff'},
   ].forEach(s=>{const c=document.createElement('div');c.className='stat-card';c.innerHTML=`<div class="stat-val" style="color:${s.color}">${s.val}</div><div class="stat-label">${s.label}</div>`;document.getElementById('stats-row').appendChild(c);});
 }
 
-// ════════════════════════════════════
-// TRAINING
-// ════════════════════════════════════
-function changeWeek(dir){activeWeek=Math.min(14,Math.max(1,activeWeek+dir));renderWeek();}
+function changeWeek(dir){activeWeek=Math.min(9,Math.max(1,activeWeek+dir));renderWeek();}
 
 function renderPills(){
   const c=document.getElementById('week-pills'); c.innerHTML='';
@@ -653,9 +570,9 @@ function renderWeek(){
   renderPills();
 
   const badges=[`<span class="badge" style="background:${col}18;color:${col}">${pname}</span>`];
-  if(w.title.toLowerCase().includes('recovery'))badges.push(`<span class="badge" style="background:rgba(91,180,255,0.15);color:#5bb4ff">🛌 Recovery</span>`);
+  if(w.title.toLowerCase().includes('recovery')||w.title.toLowerCase().includes('konsolidasi'))badges.push(`<span class="badge" style="background:rgba(91,180,255,0.15);color:#5bb4ff">🛌 Recovery</span>`);
   if(w.title.toLowerCase().includes('peak'))badges.push(`<span class="badge" style="background:rgba(255,112,64,0.15);color:#ff7040">⚡ Peak</span>`);
-  if(activeWeek===14)badges.push(`<span class="badge" style="background:rgba(245,200,66,0.15);color:#f5c842">🏁 Race Week</span>`);
+  if(w.title.toLowerCase().includes('race week'))badges.push(`<span class="badge" style="background:rgba(245,200,66,0.15);color:#f5c842">🏁 Race Week</span>`);
 
   document.getElementById('week-content').innerHTML=`
     <div class="week-header-card">
@@ -696,9 +613,6 @@ function renderWeek(){
   w.gear.forEach(item=>wg.appendChild(mkCheck(item.id,item.t,'#9d7fff')));
 }
 
-// ════════════════════════════════════
-// GEAR
-// ════════════════════════════════════
 function renderGear(){
   const c=document.getElementById('gear-master');
   GEAR_MASTER.forEach((sec,si)=>{
@@ -711,9 +625,6 @@ function renderGear(){
   });
 }
 
-// ════════════════════════════════════
-// INIT
-// ════════════════════════════════════
 loadLocal();
 activeWeek=curWeek();
 
